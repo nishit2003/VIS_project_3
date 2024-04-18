@@ -83,7 +83,6 @@ class CharacterBarGraph {
             .attr("transform", `translate(0, ${vis.height})`) // Corrected translation
             .call(vis.xAxis)
             .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
             .style("text-anchor", "end");;
 
         // Append Y axis
