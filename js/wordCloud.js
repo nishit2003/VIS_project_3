@@ -1,6 +1,6 @@
 // TODO Pass an array of words to the word cloud generator
 // Import CsvDataParser class
-
+console.log(DataStore.wordsArray)
 
 
 // set the dimensions and margins of the graph
@@ -19,7 +19,7 @@ var svg = d3.select("#wordcloud1").append("svg")
 // Constructs a new cloud layout instance. It runs an algorithm to find the position of words that suits your requirements
 var layout = d3.layout.cloud()
   .size([width, height])
-  .words(wordsArray.map(function(d) { return {text: d}; })) // Use CsvDataParser.wordsArray here
+  .words(DataStore.wordsArray.map(function(d) { return {text: d}; })) // Use CsvDataParser.wordsArray here
   .padding(10)
   .fontSize(60)
   .on("end", draw);

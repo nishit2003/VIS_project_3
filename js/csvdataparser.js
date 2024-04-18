@@ -36,19 +36,18 @@ class CsvDataParser {
                 Object.keys(d).forEach(key => {
                     const NUMERIC_VALUE = +d[key];
                     if (isNaN(NUMERIC_VALUE)) {
-                        return;     // if the attribute in question can't be converted into a numeric representation (i.e. a string name)
-                    }
+                        // return;     // if the attribute in question can't be converted into a numeric representation (i.e. a string name)
+                        const said = d["Said"]; // Get the value of the "Said" attribute
 
-                    const said = d["Said"]; // Get the value of the "Said" attribute
-
-                    // Check if the "Said" attribute exists and is not empty
-                    if (said && typeof said === "string") {
+                        if (said && typeof said === "string") {
                         // Split the string into an array of words using whitespace as the separator
                         const words = said.split(" ");
                         
                         // Add the words to the 'wordsArray'
                         CsvDataParser.wordsArray.push(...words);
                     }
+                    }
+
 
                     d[key] = +d[key];   // convert the value of each attribute to numeric
                 })
@@ -66,3 +65,4 @@ class CsvDataParser {
         await new Promise(r => setTimeout(r, 1000));    // pauses for 1 second
     }
 }
+
