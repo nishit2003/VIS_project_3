@@ -1,4 +1,7 @@
 class CsvDataParser {
+    // Static property to store wordsArray
+    static wordsArray = [];
+
     // Class Constants & Attributes
     // TODO: Add if necessary
 
@@ -12,8 +15,8 @@ class CsvDataParser {
     static async parseTVData() {
         const UFO_CSV_FILE = "data/dialogue.csv";
         d3.csv(UFO_CSV_FILE).then(data => {
-            console.log("Data:", data);
-            console.log("A Data Entry:", data[0]);
+            // console.log("Data:", data);
+            // console.log("A Data Entry:", data[0]);
             const deepCopyRawData = JSON.parse(JSON.stringify(data));   // creates a deep copy so that modifications to this object don't affect the data object
             DataStore.rawData = deepCopyRawData;    // saves the raw data to the DataStore() class
 
@@ -25,6 +28,9 @@ class CsvDataParser {
             });
             */
 
+            // Clear the wordsArray before populating it again
+            CsvDataParser.wordsArray = [];
+
             // iterate through all data entries, parsing & converting values as necessary
             data.forEach(d => {
                 Object.keys(d).forEach(key => {
@@ -32,14 +38,25 @@ class CsvDataParser {
                     if (isNaN(NUMERIC_VALUE)) {
                         return;     // if the attribute in question can't be converted into a numeric representation (i.e. a string name)
                     }
-                    // TODO: Add other parsing criteria here (trimming strings, etc.):
-                    //else if () { [PLACEHOLDER] }
+
+                    const said = d["Said"]; // Get the value of the "Said" attribute
+
+                    // Check if the "Said" attribute exists and is not empty
+                    if (said && typeof said === "string") {
+                        // Split the string into an array of words using whitespace as the separator
+                        const words = said.split(" ");
+                        
+                        // Add the words to the 'wordsArray'
+                        CsvDataParser.wordsArray.push(...words);
+                    }
 
                     d[key] = +d[key];   // convert the value of each attribute to numeric
                 })
             })
 
             DataStore.filteredData = data;    // saves the filtered data to DataStore() class
+
+            console.log(this.wordsArray)
         })
         .catch(error => console.error(error));
 
