@@ -29,7 +29,7 @@ class CsvDataParser {
             */
 
             // Clear the wordsArray before populating it again
-            CsvDataParser.wordsArray = [];
+            // CsvDataParser.wordsArray = [];
 
             // iterate through all data entries, parsing & converting values as necessary
             data.forEach(d => {
@@ -54,6 +54,8 @@ class CsvDataParser {
             })
 
             DataStore.filteredData = data;    // saves the filtered data to DataStore() class
+
+            DataStore.wordsArray = data;
 
             console.log(this.wordsArray)
         })

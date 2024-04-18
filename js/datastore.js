@@ -4,7 +4,7 @@ class DataStore {
     static filteredData = undefined;    // This is the data which we'll modify inside the application. It'll be accessed throughout.
     static currMapBckgrnd = undefined;  // This is a list of size 2, where first element is the URL, and the second elemnt is the ATTR list.
     static brushingLeaflepMap = false;  // Flag to determine if Leaflet map should ignore clicks (so brushing is possible)
-    static wordsArray = [];
+    static wordsArray = undefined;
     // TODO: Add as necessary
 
     // Constructor
@@ -19,6 +19,6 @@ class DataStore {
         DataStore.filteredData = undefined;
         DataStore.currMapBckgrnd = undefined;
         DataStore.brushingLeaflepMap = false;
-        DataStore.wordsArray = [];
+        DataStore.wordsArray = undefined;
     }
 }
