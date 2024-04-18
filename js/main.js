@@ -1,3 +1,13 @@
+async function main() {
+  await CsvDataParser.parseTVData();
+
+  console.log(DataStore.filteredData)
+}
+
+main()
+
+
+
 // For episodes Get the select element by its id
 const select = document.getElementById("episodes");
 
@@ -48,3 +58,4 @@ characterSelect.addEventListener('change', function() {
 
     characterDescription.style.display = 'block';
 });
+
