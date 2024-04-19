@@ -11,12 +11,20 @@ main()
 // For episodes Get the select element by its id
 const select = document.getElementById("episodes");
 
+// Event listener for the "change" event on the select element
+select.addEventListener("change", function() {
+    // Log the value of the selected option when the user makes a selection
+    console.log(select.value);
+});
+
 for (let i = 1; i <= 60; i++) {
   const option = document.createElement("option");
   option.value = i;
   option.textContent = i;
   select.appendChild(option);
 }
+
+console.log(select.value)
 
 
 // lil info about the char selected

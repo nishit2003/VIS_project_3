@@ -37,17 +37,23 @@ class CsvDataParser {
                     const NUMERIC_VALUE = +d[key];
                     if (isNaN(NUMERIC_VALUE)) {
                         // return;     // if the attribute in question can't be converted into a numeric representation (i.e. a string name)
+                        const ep = document.getElementById("episodes");
                         const said = d["Said"]; // Get the value of the "Said" attribute
 
-                        if (said && typeof said === "string") {
-                        // Split the string into an array of words using whitespace as the separator
-                        const words = said.split(" ");
-                        
-                        // Add the words to the 'wordsArray'
-                        CsvDataParser.wordsArray.push(...words);
-                    }
-                    }
+                        ep.addEventListener("change", function() {
+                            // Log the value of the selected option when the user makes a selection
+                            console.log(ep.value);
+                            if (said && typeof said === "string" && ep.value==d["Episode"]) {
+                                // Split the string into an array of words using whitespace as the separator
+                                    const words = said.split(" ");
+                                
+                                // Add the words to the 'wordsArray'
+                                    CsvDataParser.wordsArray.push(...words);
+                            }
+                        });
 
+                       
+                    }
 
                     d[key] = +d[key];   // convert the value of each attribute to numeric
                 })
