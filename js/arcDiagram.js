@@ -48,9 +48,9 @@ class ArcDiagram {
 
         // Draw arcs between nodes
         vis.arcPaths = [
-            `M ${vis.xScale("Batman")} ${vis.height - 30} Q ${(vis.xScale("Batman") + vis.xScale("Joker")) / 2} ${(vis.height - 100)}, ${vis.xScale("Joker")} ${vis.height - 30}`,
-            `M ${vis.xScale("Joker")} ${vis.height - 30} Q ${(vis.xScale("Joker") + vis.xScale("Catwoman")) / 2} ${(vis.height - 100)}, ${vis.xScale("Catwoman")} ${vis.height - 30}`,
-            `M ${vis.xScale("Catwoman")} ${vis.height - 30} Q ${(vis.xScale("Catwoman") + vis.xScale("Batman")) / 2} ${(vis.height - 100)}, ${vis.xScale("Batman")} ${vis.height - 30}`
+            `M ${vis.xScale("Batman")} ${vis.height - 30} Q ${(vis.xScale("Batman") + vis.xScale("Joker")) / 2} ${(vis.height - 300)}, ${vis.xScale("Joker")} ${vis.height - 30}`,
+            `M ${vis.xScale("Joker")} ${vis.height - 30} Q ${(vis.xScale("Joker") + vis.xScale("Catwoman")) / 2} ${(vis.height - 300)}, ${vis.xScale("Catwoman")} ${vis.height - 30}`,
+            `M ${vis.xScale("Catwoman")} ${vis.height - 30} Q ${(vis.xScale("Catwoman") + vis.xScale("Batman")) / 2} ${(vis.height - 300)}, ${vis.xScale("Batman")} ${vis.height - 30}`
         ];
 
         vis.arcPaths.forEach(path => {
@@ -64,12 +64,12 @@ class ArcDiagram {
 
     updateVis() {
         // Remove existing arcs
-        console.log("hi")
         let vis = this;
         vis.svg.selectAll("path").remove();
+        const controlPointY = vis.height - 300; // Adjust the height of the control point
 
-        // Draw arcs between nodes (only Batman and Catwoman)
-        vis.arcPaths = `M ${vis.xScale("Batman")} ${vis.height - 30} Q ${(vis.xScale("Batman") + vis.xScale("Catwoman")) / 2} ${(vis.height - 100)}, ${vis.xScale("Catwoman")} ${vis.height - 30}`;
+
+        vis.arcPaths = `M ${vis.xScale("Batman")} ${vis.height - 30} Q ${(vis.xScale("Batman") + vis.xScale("Catwoman")) / 2} ${controlPointY}, ${vis.xScale("Catwoman")} ${vis.height - 30}`;
 
         vis.svg.append("path")
             .attr("d", vis.arcPaths)

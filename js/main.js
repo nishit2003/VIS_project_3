@@ -11,7 +11,6 @@ async function main() {
         value = document.getElementById("character-selection").value
         characterBarGraph.character = value
         characterBarGraph.updateVis()
-        console.log("hi")
         arcDiagram.updateVis()
     
     })
