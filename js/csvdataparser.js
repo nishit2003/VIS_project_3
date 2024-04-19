@@ -63,7 +63,7 @@ class CsvDataParser {
             }
 
             console.log("Scene Array:", sceneArray);
-
+            CsvDataParser.sceneArray = sceneArray
             DataStore.filteredData = data;    // saves the filtered data to DataStore() class
         })
         .catch(error => console.error(error));
