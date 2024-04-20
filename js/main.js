@@ -1,4 +1,4 @@
-let characterGraph, arcDiagram;
+let characterBarGraph, arcDiagram;
 
 async function main() {
     await CsvDataParser.parseTVData();
