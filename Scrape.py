@@ -103,6 +103,7 @@ with open("dialogue.csv", "w", newline='', encoding="utf-8") as csvfile:
     
     for episode in episode_dict:
         # Get Episode and Season Number
+        print(episode)
         i = i + 1
         if i > 60:
             season = 2
