@@ -1,87 +1,39 @@
-let characterBarGraph, arcDiagram;
+/* This script will act as the main "runner" of the entire application. */
+// some script-level (global) variables
+let wordCloud, characterBarGraph, arcDiagram;;
 
+// Because we've moved the CSV data parsing into a separate module, we need to ensure the rest of the program waits for CSV parsing to complete.
+//  If you look at the in-class examples, most of the visualization creation is done INSIDE of the "d3.csv()" tag, so the synchronization is encapsulated.
+//  Since we've split it out, we need to ensure the main runner waits for the parsing to complete. That is why I've launched the application in this way.
 async function main() {
-  await CsvDataParser.parseTVData();
+    await CsvDataParser.parseTVData();      // asynchronously parse TV data, waiting until completion before continuing
+    console.log("Parsed Data:\n", DataStore.filteredData);  // prints the parsed data for development purposes
 
-    // next we can generate the leaflet map
+    // after data has been successfully parsed, lets create some visualizations
+    wordCloud = new WordCloud();
     characterBarGraph = new CharacterBarGraph({ parentElement: '#graph'}, DataStore.filteredData, "Alfred");
     arcDiagram = new ArcDiagram({ parentElement: '#arc'}, DataStore.filteredData, CsvDataParser.sceneArray, 5)
+    // TODO: Create any other visualizations here as well (charts, graphs, etc.)
 
-    document.getElementById("character-selection").addEventListener("change", function(){
-        value = document.getElementById("character-selection").value
-        characterBarGraph.character = value
-        characterBarGraph.updateVis()
-    })
+    // calls method to populate the episode number combo box
+    populateEpisodeComboBox()
 
-    document.getElementById("episodes").addEventListener("change", function() {
-        value = document.getElementById("episodes").value
-        arcDiagram.episode = value
-        arcDiagram.updateVis()
-    })
+    // lastly, we setup the UI event handlers (callbacks)
+    setupUICallbacks();
+}
 
-    // For episodes Get the select element by its id
-    const select = document.getElementById("episodes");
-
-    for (let i = 1; i <= 60; i++) {
-    const option = document.createElement("option");
-    option.value = i;
-    option.textContent = i;
-    select.appendChild(option);
+function populateEpisodeComboBox() {
+    // For episodes Get the combo box (select) element by its id
+    const cmbEpisode = document.getElementById("episodes");
+    
+    const LAST_EPISODE_NUM = 60;    // there are 60 episodes in the dataset. Could be parsed dynamically if needed
+    for (let i = 1; i <= LAST_EPISODE_NUM; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
+        cmbEpisode.appendChild(option);
     }
 }
 
-main()
-
-
-
-// For episodes Get the select element by its id
-const select = document.getElementById("episodes");
-
-for (let i = 1; i <= 60; i++) {
-  const option = document.createElement("option");
-  option.value = i;
-  option.textContent = i;
-  select.appendChild(option);
-}
-
-
-// lil info about the char selected
-// Get the select element
-const characterSelect = document.getElementById('character-selection');
-const characterDescription = document.getElementById('character-description');
-
-characterSelect.addEventListener('change', function() {
-    const selectedCharacter = characterSelect.value;
-
-    switch(selectedCharacter) {
-        case 'Batman':
-            characterDescription.textContent = "Batman, also known as the Dark Knight, is a vigilante superhero who protects Gotham City from crime and corruption. With his vast wealth, advanced technology, and martial arts skills, Batman strikes fear into the hearts of criminals.";
-            break;
-        case 'Bruce Wayne':
-            characterDescription.textContent = "Bruce Wayne is the billionaire philanthropist owner of Wayne Enterprises and the secret identity of Batman. Haunted by the murder of his parents, Bruce dedicates his life to fighting crime and seeking justice for the citizens of Gotham City.";
-            break;
-        case 'Catwoman':
-            characterDescription.textContent = "Catwoman, also known as Selina Kyle, is a skilled thief and occasional ally of Batman. With her agility, stealth, and mastery of martial arts, Catwoman navigates the morally gray areas of Gotham City, often crossing paths with both heroes and villains.";
-            break;
-        case 'Commissioner Gordon':
-              characterDescription.textContent = "Commissioner James Gordon is the head of the Gotham City Police Department and one of Batman's most trusted allies. With unwavering integrity and a dedication to justice, Gordon works tirelessly to maintain law and order in Gotham City, often relying on Batman's help to combat the city's rampant crime and corruption.";
-              break;
-        case 'Gordon':
-              characterDescription.textContent = "Gordon is a recurring character in the Batman universe, often referring to Commissioner James Gordon. As an emblem of integrity and justice, Gordon serves as a beacon of hope in Gotham City, striving to uphold the law and protect its citizens from the city's many dangers.";
-              break;
-        case 'Maven':
-              characterDescription.textContent = "Maven is a lesser-known character in the Batman mythos, often associated with the criminal underworld of Gotham City. With a mysterious and enigmatic persona, Maven operates in the shadows, manipulating events from behind the scenes to further their own agenda.";
-              break;
-        case 'Mr. Stern':
-              characterDescription.textContent = "Mr. Stern is a minor character in the Batman universe, known for his involvement in Gotham City's financial sector. As a wealthy businessman with ties to various criminal enterprises, Mr. Stern often finds himself embroiled in the city's intrigue and corruption.";
-              break;
-        case 'Red Claw':
-              characterDescription.textContent = "Red Claw is a formidable villain and terrorist leader who poses a significant threat to Gotham City. With her ruthless tactics and fanatical ideology, Red Claw seeks to destabilize the city and challenge Batman's authority at every turn.";
-              break;
-        default:
-            characterDescription.textContent = ""; 
-    }
-
-    characterDescription.style.display = 'block';
-});
-
+/* Script Execution Starts Here: */
+main();

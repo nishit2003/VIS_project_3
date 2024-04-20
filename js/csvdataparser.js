@@ -8,22 +8,14 @@ class CsvDataParser {
     }
 
     // Class Methods
-    // method which parses specifically the data from the 'ufo_sightings.csv' file. TODO: Maybe make more modular & pass file names/attributes to parse in?
+    // method which parses specifically the data from the 'dialogue.csv' file. TODO: Maybe make more modular & pass file names/attributes to parse in?
     static async parseTVData() {
-        const UFO_CSV_FILE = "data/dialogue.csv";
-        d3.csv(UFO_CSV_FILE).then(data => {
-            console.log("Data:", data);
-            console.log("A Data Entry:", data[0]);
+        const TV_CSV_FILE = "data/dialogue.csv";
+        d3.csv(TV_CSV_FILE).then(data => {
+            // console.log("Data:", data);
+            // console.log("A Data Entry:", data[0]);
             const deepCopyRawData = JSON.parse(JSON.stringify(data));   // creates a deep copy so that modifications to this object don't affect the data object
             DataStore.rawData = deepCopyRawData;    // saves the raw data to the DataStore() class
-
-            /* TODO: Doesn't seem to work:
-            // Filter out data entries with a year greater than 5000
-            data = data.filter(d => {
-                const year = new Date(d.date_time).getFullYear(); // Extract the year from the date_time attribute
-                return year <= 5000; // Keep only entries with a year less than or equal to 5000
-            });
-            */
 
             // iterate through all data entries, parsing & converting values as necessary
             let sceneArray = []
@@ -44,14 +36,10 @@ class CsvDataParser {
                 }
 
                 Object.keys(d).forEach(key => {
-                    const NUMERIC_VALUE = +d[key];
-                    if (isNaN(NUMERIC_VALUE)) {
-                        return;     // if the attribute in question can't be converted into a numeric representation (i.e. a string name)
-                    }
-                    // TODO: Add other parsing criteria here (trimming strings, etc.):
-                    //else if () { [PLACEHOLDER] }
-
-                    d[key] = +d[key];   // convert the value of each attribute to numeric
+                    // perform any conversions needed when parsing data (string -> int, string -> float, etc.)
+                    if (key == "Season") { d[key] = +d[key]; }  // convert the value of the 'Season' attribute to a numeric
+                    else if (key == "Episode") { d[key] = +d[key]; }  // convert the value of the 'Episode' attribute to a numeric
+                    else { d[key] = d[key]; }   // saves all others as-is
                 })
             })
 
