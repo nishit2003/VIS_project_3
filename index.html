@@ -4,7 +4,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>VIS Project 3</title>
-   <link rel="stylesheet" href="/styles/styles.css">
+   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
    <header>
@@ -16,17 +16,14 @@
    <div class="container">
 
 
-      <LABEL>SELECT AN EPISODE</LABEL>  
-
-     <select id="episodes">
+      <LABEL>SELECT AN EPISODE</LABEL>
+      <select id="episodes">
          <option value="hide">-- EPISODE --</option>
-     </select>
+      </select>
 
-     <div id= "wordcloud1"></div>
-
-     <LABEL>SELECT AN CHARACTER</LABEL>  
-      <select id = "character">
-          <option value="hide">-- CHARACTER --</option>
+      <LABEL>SELECT AN CHARACTER</LABEL>  
+      <select id = "characters">
+         <option value="hide">-- CHARACTER --</option>
          <option value="Batman">Batman</option>
          <option value="Bruce Wayne">Bruce Wayne</option>
          <option value="Catwoman">Catwoman</option>
@@ -35,18 +32,26 @@
          <option value="Maven">Maven</option>
          <option value="Mr. Stern">Mr. Stern</option>
          <option value="Red Claw">Red Claw</option>
-       </select>
+      </select>
 
-       <p id="character-description" style="display: none;"></p>
+      <button id="btnCreateWordCloud">Create Word Cloud</button>
 
-       
+      <div id="wordcloud1"></div>
+
+      <p id="character-description" style="display: none;"></p>
    </div>
+
+   <!--
+      JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters).
+      Library files (D3 & WordCloud) first, followed by custom JS classes.
+   -->
    <script src="js/d3.v6.min.js" type="text/javascript"></script>
-   <script src="js/csvdataparser.js" type="text/javascript"></script>
-   <script src="js/main.js" type="text/javascript"></script>
-   <script src="js/datastore.js" type="text/javascript"></script>
    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
-   <!-- <script src="js/wordcloud.js" type="text/javascript"></script> -->
+   <script src="js/datastore.js" type="text/javascript"></script>
+   <script src="js/csvdataparser.js" type="text/javascript"></script>
+   <script src="js/wordcloud.js" type="text/javascript"></script>
    <script src="js/extractwords.js" type="text/javascript"></script>
+   <script src="js/callbacks.js" type="text/javascript"></script>
+   <script src="js/main.js" type="text/javascript"></script>
 </body>
 </html>
