@@ -49,15 +49,10 @@ class CharacterBarGraph {
 
         vis.yAxis = d3.axisLeft(vis.yScale)
 
-        // Calculate frequency of each Episode
-        console.log(vis.data.filter(d => d.Person == vis.character))
-
         vis.characterSaidCounts = d3.rollup(vis.data.filter(d => d.Person == vis.character), v => v.length, d => d.Episode);
 
         // Convert the rollup map to an array of objects
         vis.characterCount = Array.from(vis.characterSaidCounts, ([episode, Value]) => ({ episode, Value }));
-
-        console.log(vis.characterCount)
 
         // X axis
         vis.xScale = d3.scaleBand()
@@ -133,7 +128,6 @@ class CharacterBarGraph {
 
     updateVis() {
         let vis = this;
-        console.log(vis.data)
 
         d3.selectAll("svg text")
         .filter(function() {
