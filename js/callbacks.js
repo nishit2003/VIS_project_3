@@ -1,6 +1,6 @@
 /* This script houses a bunch of UI element callbacks. Things such as the button clicked, dropdown selection, or text entered, event handlers. */
 function setupUICallbacks() {
-    document.getElementById('characters').addEventListener('change', function() {
+    document.getElementById('character-selection').addEventListener('change', function() {
         const selectedCharacter = this.value;
         const characterDescription = document.getElementById('character-description');
 
@@ -34,6 +34,10 @@ function setupUICallbacks() {
         }
 
         characterDescription.style.display = 'block';
+
+        value = document.getElementById("character-selection").value
+        characterBarGraph.character = value
+        characterBarGraph.updateVis()
     });
 
     document.getElementById("btnCreateWordCloud").addEventListener("click", function() {
@@ -43,7 +47,7 @@ function setupUICallbacks() {
         DataStore.wordCloudArray = [];
 
         const selectedEpisode = document.getElementById("episodes").value;
-        const selectedCharacter = document.getElementById("characters").value;
+        const selectedCharacter = document.getElementById("character-selection").value;
 
         DataStore.filteredData.forEach(d => {
             const lineSaid = d["Said"];     // saves the line said for current entry in data file
@@ -71,6 +75,12 @@ function setupUICallbacks() {
         }
         wordCloud.createWordCloud();    // calls method which creates a word cloud from the selected episode & character
     });
+
+    document.getElementById("episodes").addEventListener("change", function() {
+        value = document.getElementById("episodes").value
+        arcDiagram.episode = value
+        arcDiagram.updateVis()
+    })
 
     // TODO: Add more callbacks as necessary:
     //  Simply follow the structure above (copy & paste for template) of targeting the UI element,

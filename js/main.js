@@ -1,6 +1,6 @@
 /* This script will act as the main "runner" of the entire application. */
 // some script-level (global) variables
-let wordCloud;
+let wordCloud, characterBarGraph, arcDiagram;;
 
 // Because we've moved the CSV data parsing into a separate module, we need to ensure the rest of the program waits for CSV parsing to complete.
 //  If you look at the in-class examples, most of the visualization creation is done INSIDE of the "d3.csv()" tag, so the synchronization is encapsulated.
@@ -11,6 +11,8 @@ async function main() {
 
     // after data has been successfully parsed, lets create some visualizations
     wordCloud = new WordCloud();
+    characterBarGraph = new CharacterBarGraph({ parentElement: '#graph'}, DataStore.filteredData, "Alfred");
+    arcDiagram = new ArcDiagram({ parentElement: '#arc'}, DataStore.filteredData, CsvDataParser.sceneArray, 5)
     // TODO: Create any other visualizations here as well (charts, graphs, etc.)
 
     // calls method to populate the episode number combo box

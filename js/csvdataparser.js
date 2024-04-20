@@ -18,7 +18,23 @@ class CsvDataParser {
             DataStore.rawData = deepCopyRawData;    // saves the raw data to the DataStore() class
 
             // iterate through all data entries, parsing & converting values as necessary
+            let sceneArray = []
             data.forEach(d => {
+                const episode = d.Episode.trim();
+                const scene = d.Scene.trim();
+                const character = d.Person.trim();
+                if (character != "") {
+                    if (!sceneArray[episode]) {
+                        sceneArray[episode] = {};
+                    }
+
+                    if (!sceneArray[episode][scene]) {
+                        sceneArray[episode][scene] = new Set(); // Using Set to automatically remove duplicates
+                    }
+
+                    sceneArray[episode][scene].add(character);
+                }
+
                 Object.keys(d).forEach(key => {
                     // perform any conversions needed when parsing data (string -> int, string -> float, etc.)
                     if (key == "Season") { d[key] = +d[key]; }  // convert the value of the 'Season' attribute to a numeric
@@ -27,6 +43,15 @@ class CsvDataParser {
                 })
             })
 
+            // Convert Set to Array for each scene
+            for (const episode in sceneArray) {
+                for (const scene in sceneArray[episode]) {
+                    sceneArray[episode][scene] = Array.from(sceneArray[episode][scene]);
+                }
+            }
+
+            console.log("Scene Array:", sceneArray);
+            CsvDataParser.sceneArray = sceneArray
             DataStore.filteredData = data;    // saves the filtered data to DataStore() class
         })
         .catch(error => console.error(error));
