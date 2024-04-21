@@ -1,6 +1,6 @@
 /* This script will act as the main "runner" of the entire application. */
 // some script-level (global) variables
-let wordCloud, characterBarGraph, arcDiagram;;
+let wordCloud, characterBarGraph, arcDiagram;
 
 // Because we've moved the CSV data parsing into a separate module, we need to ensure the rest of the program waits for CSV parsing to complete.
 //  If you look at the in-class examples, most of the visualization creation is done INSIDE of the "d3.csv()" tag, so the synchronization is encapsulated.
@@ -22,8 +22,30 @@ async function main() {
     setupUICallbacks();
 }
 
+function populateColumnHeaderComboBox(dfHeaders) {
+    // For column headers, get the combo box (select) element by its id
+    const cmbColHeaders = document.getElementById("data-column-headers");
+    
+    dfHeaders.forEach(header => {
+        // firstly, we don't want to create options for a few column headers ('Season' & 'Said'), as they're either all the same or all unique
+        if (header == 'Season') {
+            return;     // immediately continues to next iteration
+        }
+        else if (header == 'Said') {
+            return;     // immediately continues to next iteration
+        }
+        // TODO: Also skip the 'Person' header? That's TBD still...
+
+        // create a combo box (select) element option
+        const option = document.createElement("option");
+        option.value = header;
+        option.textContent = header;
+        cmbColHeaders.appendChild(option);     // add newly-created option to the combo box
+    });
+}
+
 function populateEpisodeComboBox() {
-    // For episodes Get the combo box (select) element by its id
+    // For episodes, get the combo box (select) element by its id
     const cmbEpisode = document.getElementById("episodes");
     
     const LAST_EPISODE_NUM = 60;    // there are 60 episodes in the dataset. Could be parsed dynamically if needed

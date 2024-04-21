@@ -14,42 +14,56 @@
    </header>
 
    <div id="maincontent">
-      <LABEL>SELECT AN EPISODE</LABEL>
-      <select id="episodes">
-         <option value="hide">-- EPISODE --</option>
-      </select>
+      <!-- Div for configuration stuff (combo boxes & buttons) -->
+      <div id="configuration">
+         <label>SELECT COLUMN HEADER</label>
+         <select id="data-column-headers">
+            <option value="hide">- COLUMN HEADER -</option>
+         </select>
+         <button id="btnCreateIterableDataset">Create Iterable Dataset</button>
+         <button id="btnBackwards">&lt;-- Iterate Backwards</button>
+         <button id="btnForwards">Iterate Forwards --&gt;</button>
+         <!-- TODO: Remove the label below after implementing. Simply gives a display to see the backend functioning: -->
+         <label id="iterable-dataset-display">[PLACEHOLDER]</label><br><br><br>
 
-      <LABEL>SELECT AN CHARACTER</LABEL>
-      <select id="character-selection">
-            <option value="Alfred">Alfred</option>
-            <option value="Barbara">Barbara Gordon</option>
-            <option value="Batman">Batman</option>
-            <option value="Bruce">Bruce Wayne</option>
-            <option value="Bullock">Harvey Bullock</option>
-            <option value="Catwoman">Catwoman</option>
-            <option value="Dick">Dick Grayson</option>
-            <option value="Gordon">James Gordon</option>
-            <option value="Harley">Harley Quinn</option>
-            <option value="Hill">Hamilton Hill</option>
-            <option value="Ivy">Poison Ivy</option>
-            <option value="Joker">Joker</option>
-            <option value="Robin">Robin</option>
-            <option value="Penguin">Penguin</option>
-            <option value="Scarecrow">Scarecrow</option>
-            <option value="Summer">Summer Gleeson</option>
-            <option value="Thorne">Rupert Thorne</option>
-            <option value="Two-Face">Two-Face</option>
-      </select>
-      
-      <button id="btnCreateWordCloud">Create Word Cloud</button>
+         <label>SELECT AN EPISODE</label>
+         <select id="episodes">
+            <option value="hide">-- EPISODE --</option>
+         </select>
 
-      <div id="wordcloud1"></div>
+         <label>SELECT AN CHARACTER</label>
+         <select id="character-selection">
+               <option value="Alfred">Alfred</option>
+               <option value="Barbara">Barbara Gordon</option>
+               <option value="Batman">Batman</option>
+               <option value="Bruce">Bruce Wayne</option>
+               <option value="Bullock">Harvey Bullock</option>
+               <option value="Catwoman">Catwoman</option>
+               <option value="Dick">Dick Grayson</option>
+               <option value="Gordon">James Gordon</option>
+               <option value="Harley">Harley Quinn</option>
+               <option value="Hill">Hamilton Hill</option>
+               <option value="Ivy">Poison Ivy</option>
+               <option value="Joker">Joker</option>
+               <option value="Robin">Robin</option>
+               <option value="Penguin">Penguin</option>
+               <option value="Scarecrow">Scarecrow</option>
+               <option value="Summer">Summer Gleeson</option>
+               <option value="Thorne">Rupert Thorne</option>
+               <option value="Two-Face">Two-Face</option>
+         </select>
+         
+         <button id="btnCreateWordCloud">Create Word Cloud</button>
+         <p id="character-description" style="display: none;"></p>
+      </div>
 
-      <p id="character-description" style="display: none;"></p>
-
-      <div id="graph"></div>
-      <div id="arc"></div>
-   </div>
+      <!-- Div for the actual visualizations themselves -->
+      <div id="visualizations">
+         <div id="wordcloud1"></div>
+         <div id="graph"></div>
+         <div id="arc"></div>
+      </div>
+   </div> <!-- End of 'maincontent' div -->
 
    <!--
       JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters).
