@@ -5,6 +5,8 @@ class DataStore {
     static currMapBckgrnd = undefined;  // This is a list of size 2, where first element is the URL, and the second elemnt is the ATTR list.
     static brushingLeaflepMap = false;  // Flag to determine if Leaflet map should ignore clicks (so brushing is possible)
     static wordCloudArray = [];         // This array stores all words in the currently displayed word cloud (determined by episode & character selection)
+    static iterableDataset = {};
+    static iterableIndex = 0;
     // TODO: Add as necessary
 
     // Constructor

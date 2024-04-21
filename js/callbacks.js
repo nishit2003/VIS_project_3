@@ -43,7 +43,7 @@ function setupUICallbacks() {
     document.getElementById("btnCreateWordCloud").addEventListener("click", function() {
         //console.log("btnCreateWordCloud clicked!");   // for testing/development's sake
 
-        // first of all, clear the word cloud contents before populating it again
+        // first of all, clear the word cloud's contents before populating it again
         DataStore.wordCloudArray = [];
 
         const selectedEpisode = document.getElementById("episodes").value;
@@ -73,7 +73,7 @@ function setupUICallbacks() {
             //  The result is a word cloud with only 1 entry, easily notifying the user that a real word cloud can't be created.
             DataStore.wordCloudArray.push("N/A");
         }
-        wordCloud.createWordCloud();    // calls method which creates a word cloud from the selected episode & character
+        //wordCloud.createWordCloud();    // calls method which creates a word cloud from the selected episode & character
     });
 
     document.getElementById("episodes").addEventListener("change", function() {
@@ -81,6 +81,109 @@ function setupUICallbacks() {
         arcDiagram.episode = value
         arcDiagram.updateVis()
     })
+
+    document.getElementById("btnCreateIterableDataset").addEventListener("click", function() {
+        //console.log("btnCreateIterableDataset clicked!");   // for testing/development's sake
+
+        // first of all, clear the iterable dataset's contents before populating it again
+        DataStore.iterableDataset = {};
+
+        const selectedColumnHeader = document.getElementById("data-column-headers").value;
+        if (selectedColumnHeader == "hide") { return; }     // if no column is selected, simply return (don't create an iterable dataset)
+
+        DataStore.filteredData.forEach(d => {
+            // the 'iterableDataset' dictionary should contain a list of keys which are the values based on the selected column header
+            if (DataStore.iterableDataset[d[selectedColumnHeader]]) {
+                // if a key for the current data entry already exists, we add to list of data stored at that key
+                DataStore.iterableDataset[d[selectedColumnHeader]].push(d);
+            }
+            else {
+                // otherwise, we create a new entry (list) with that key and add the entry to that newly-created list
+                DataStore.iterableDataset[d[selectedColumnHeader]] = [d];
+            }
+        });
+        console.log("DataStore.iterableDataset:", DataStore.iterableDataset);  // testing
+
+        // resets the label (display) for user & the iterable dataset index
+        document.getElementById("iterable-dataset-display").textContent = "[PLACEHOLDER]";   // TODO: Remove after we remove the label
+        DataStore.iterableIndex = 0;    // TODO: Remove after we remove the label
+    });
+
+    document.getElementById("btnBackwards").addEventListener("click", function() {
+        //console.log("btnCreateIterableDataset clicked!");   // for testing/development's sake
+
+        if (Object.keys(DataStore.iterableDataset).length === 0) {
+            return;     // first of all, if there is currently no iterable dictionary, we return without doing anything
+        }
+        DataStore.iterableIndex--;  // decrements DataStore.iterableIndex
+        const selectedColumnHeader = document.getElementById("data-column-headers").value;
+
+        // the list of keys needs to be sorted differently depending on whether or not they're ints or strings (Episodes vs other headers)
+        let iterableDatasetKeys;
+        if (selectedColumnHeader == "Episode") {
+            const BASE_10 = 10;
+            iterableDatasetKeys = Object.keys(DataStore.iterableDataset);
+            iterableDatasetKeys.sort((a, b) => parseInt(a, BASE_10) - parseInt(b, BASE_10));    // saves list of keys sorted numerically    
+        }
+        else {
+            iterableDatasetKeys = Object.keys(DataStore.iterableDataset).sort();  // saves list of keys sorted alphabetically
+        }
+        
+        // if 'DataStore.iterableIndex' is < 0, we wrap around and grab the last item in the list
+        if (DataStore.iterableIndex < 0) { DataStore.iterableIndex = iterableDatasetKeys.length - 1}
+
+        // grabs the first item in the iterable dataset & prints the value associated with the selected column header
+        let currDatasetKey = iterableDatasetKeys[DataStore.iterableIndex];  // grabs current dataset key
+        let currDataset = DataStore.iterableDataset[currDatasetKey];        // grabs the dataset itself
+        let currDatasetValue = currDataset[0][selectedColumnHeader];        // grabs value of first entry for attributed currently selected
+    
+        // TODO: Remove console logs in future:
+        //console.log("currDatasetKey:\n", currDatasetKey);  // testing
+        //console.log("currDataset:\n", currDataset);  // testing
+        //console.log("currDatasetValue:\n", currDatasetValue);  // testing
+        
+        // TODO: Remove after we remove the label
+        const lblIterableDataset = document.getElementById("iterable-dataset-display");
+        lblIterableDataset.textContent = currDatasetValue;
+    });
+
+    document.getElementById("btnForwards").addEventListener("click", function() {
+        //console.log("btnCreateIterableDataset clicked!");   // for testing/development's sake
+
+        if (Object.keys(DataStore.iterableDataset).length === 0) {
+            return;     // first of all, if there is currently no iterable dictionary, we return without doing anything
+        }
+        DataStore.iterableIndex++;  // increments DataStore.iterableIndex
+        const selectedColumnHeader = document.getElementById("data-column-headers").value;
+
+        // the list of keys needs to be sorted differently depending on whether or not they're ints or strings (Episodes vs other headers)
+        let iterableDatasetKeys;
+        if (selectedColumnHeader == "Episode") {
+            const BASE_10 = 10;
+            iterableDatasetKeys = Object.keys(DataStore.iterableDataset);
+            iterableDatasetKeys.sort((a, b) => parseInt(a, BASE_10) - parseInt(b, BASE_10));    // saves list of keys sorted numerically    
+        }
+        else {
+            iterableDatasetKeys = Object.keys(DataStore.iterableDataset).sort();  // saves list of keys sorted alphabetically
+        }
+                
+        // if 'DataStore.iterableIndex' is > 'iterableDatasetKeys.length', we wrap around and grab the first item in the list
+        if (DataStore.iterableIndex >= iterableDatasetKeys.length) { DataStore.iterableIndex = 0}
+
+        // grabs the first item in the iterable dataset & prints the value associated with the selected column header
+        let currDatasetKey = iterableDatasetKeys[DataStore.iterableIndex];  // grabs current dataset key
+        let currDataset = DataStore.iterableDataset[currDatasetKey];        // grabs the dataset itself
+        let currDatasetValue = currDataset[0][selectedColumnHeader];        // grabs value of first entry for attributed currently selected
+    
+        // TODO: Remove console logs in future:
+        //console.log("currDatasetKey:\n", currDatasetKey);  // testing
+        //console.log("currDataset:\n", currDataset);  // testing
+        //console.log("currDatasetValue:\n", currDatasetValue);  // testing
+        
+        // TODO: Remove after we remove the label
+        const lblIterableDataset = document.getElementById("iterable-dataset-display");
+        lblIterableDataset.textContent = currDatasetValue;
+    });
 
     // TODO: Add more callbacks as necessary:
     //  Simply follow the structure above (copy & paste for template) of targeting the UI element,

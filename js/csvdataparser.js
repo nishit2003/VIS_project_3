@@ -11,6 +11,13 @@ class CsvDataParser {
     // method which parses specifically the data from the 'dialogue.csv' file. TODO: Maybe make more modular & pass file names/attributes to parse in?
     static async parseTVData() {
         const TV_CSV_FILE = "data/dialogue.csv";
+        let csvData = await d3.csv(TV_CSV_FILE);  // uses D3 library to parse .csv data file
+
+        // parse .csv data file headers     // TODO: Move this out to somewhere else? We parse the .csv file twice as it's currently setup
+        const csvDataFileHeaders = Object.keys(csvData[0]);
+        populateColumnHeaderComboBox(csvDataFileHeaders);   // calls method which populates the column header combo boxes
+        
+        // now we perform data processing
         d3.csv(TV_CSV_FILE).then(data => {
             // console.log("Data:", data);
             // console.log("A Data Entry:", data[0]);
@@ -50,7 +57,7 @@ class CsvDataParser {
                 }
             }
 
-            console.log("Scene Array:", sceneArray);
+            //console.log("Scene Array:", sceneArray);    // testing
             CsvDataParser.sceneArray = sceneArray
             DataStore.filteredData = data;    // saves the filtered data to DataStore() class
         })
