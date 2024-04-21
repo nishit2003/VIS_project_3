@@ -73,7 +73,7 @@ function setupUICallbacks() {
             //  The result is a word cloud with only 1 entry, easily notifying the user that a real word cloud can't be created.
             DataStore.wordCloudArray.push("N/A");
         }
-        //wordCloud.createWordCloud();    // calls method which creates a word cloud from the selected episode & character
+        wordCloud.createWordCloud();    // calls method which creates a word cloud from the selected episode & character
     });
 
     document.getElementById("episodes").addEventListener("change", function() {
