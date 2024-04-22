@@ -11,8 +11,8 @@ class SceneBargraph {
     constructor(_config, _data, _sceneArray, _character) {
         this.config = {
             parentElement: _config.parentElement,
-            containerWidth: 900,
-            containerHeight: 850,
+            containerWidth: 450,
+            containerHeight: 400,
             margin: _config.margin || { top: 50, right: 60, bottom: 50, left: 100 },
             tooltipPadding: _config.tooltipPadding || 15,
         };
@@ -37,21 +37,46 @@ class SceneBargraph {
         .append('g')
         .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
-        vis.characterSaidCounts = d3.rollup(vis.data.filter(d => d.Person == vis.character), v => v.length, d => d.Episode);
+        console.log(vis.data)
+        vis.characterSaidCounter = {}
+        vis.importantCharacter = ["Alfred", "Barbara", "Batman", "Bruce", "Bullock", "Catwoman", "Dick", "Gordon", "Harley",
+                                  "Hill", "Ivy", "Joker", "Robin", "Penguin", "Scarecrow", "Summer", "Thorne", "Two-face"]
+        vis.importantCharacter.forEach(d => {
+            vis.characterSaidCounter[d] = 0
+        })
+        vis.data.forEach(d => {
+            if (vis.sceneArray[d.Episode][d.Scene].includes(vis.character)) {
+                vis.sceneArray[d.Episode][d.Scene].forEach(character => {
+                    if (character != vis.character && vis.importantCharacter.includes(character)) {
+                        vis.characterSaidCounter[character] = vis.characterSaidCounter[character] + 1
+                    }
+                })
+            }
+        })
 
-        // Convert the rollup map to an array of objects
-        vis.characterCount = Array.from(vis.characterSaidCounts, ([episode, Value]) => ({ episode, Value }));
+        // Create items array
+        var items = Object.keys(vis.characterSaidCounter).map(function(key) {
+        return [key, vis.characterSaidCounter[key]];
+        });
+
+        // Sort the array based on the second element
+        items.sort(function(first, second) {
+        return second[1] - first[1];
+        });
+
+        // Create a new array with only the first 5 items
+        vis.characterSaidCounter = items.slice(0, 5)
+        console.log(vis.characterSaidCounter)
         
         // Y axis
         vis.yScale = d3.scaleBand()
             .range([0, vis.width])
-            .domain(vis.characterCount.map(d => d.episode))
+            .domain(vis.characterSaidCounter.map(d => d[0]))
             .padding(0.2);
 
-        // Add X axis
         vis.xScale = d3.scaleLinear()
-            .domain([d3.max(vis.characterCount, d => d.Value), 0]) // Adjust domain based on the maximum frequency
-            .range([0, vis.height]);
+            .domain([d3.max(vis.characterSaidCounter, d => d[1]), 0]) // Reverse the domain to start from max to min
+            .range([vis.height, 0]);
 
         // Initialize axes
         vis.xAxis = d3.axisBottom(vis.xScale)
@@ -87,16 +112,16 @@ class SceneBargraph {
             .text("Frequency");
 
         vis.svg.append('text')
-            .attr('x', vis.width / 2.5)
+            .attr('x', vis.width / 3)
             .attr('y', -40)
             .attr('font-size', "16px")
             .attr('dy', '.71em')
-            .text(`${vis.character} Histogram`);
+            .text(`Who ${vis.character} talks to the most`);
 
         // Convert characterCount to histogram bins
-        vis.histogramData = vis.characterCount.map(d => ({
-            episode: d.episode,
-            frequency: d.Value
+        vis.histogramData = vis.characterSaidCounter.map(d => ({
+            episode: d[0],
+            frequency: d[1]
         }));
 
         // Draw histogram bars
@@ -105,9 +130,9 @@ class SceneBargraph {
             .enter().append("rect")
             .attr("class", "bar")
             .attr("y", d => vis.yScale(d.episode))
-            .attr("x", 0)
+            .attr("x", 1)
             .attr("height", vis.yScale.bandwidth())
-            .attr("width", d => vis.height - vis.xScale(d.frequency))
+            .attr("width", d => vis.xScale(d.frequency))
             .style("fill", "#69b3a2");
     }
 
@@ -116,19 +141,48 @@ class SceneBargraph {
 
         d3.selectAll("svg text")
         .filter(function() {
-            return /Histogram$/.test(d3.select(this).text());  // Check if text begin with a "C"
+            return /^Who/.test(d3.select(this).text());  // Check if text begins with "Histogram"
         })
-        .text(`${vis.character} Histogram`);
+        .text(`Who ${vis.character} talks to the most`);
 
-        vis.characterSaidCounts = d3.rollup(vis.data.filter(d => d.Person == vis.character), v => v.length, d => d.Episode);
+        vis.characterSaidCounter = {}
+        vis.importantCharacter.forEach(d => {
+            vis.characterSaidCounter[d] = 0
+        })
+        vis.data.forEach(d => {
+            if (vis.sceneArray[d.Episode][d.Scene].includes(vis.character)) {
+                vis.sceneArray[d.Episode][d.Scene].forEach(character => {
+                    if (character != vis.character && vis.importantCharacter.includes(character)) {
+                        vis.characterSaidCounter[character] = vis.characterSaidCounter[character] + 1
+                    }
+                })
+            }
+        })
 
-        // Convert the rollup map to an array of objects
-        vis.characterCount = Array.from(vis.characterSaidCounts, ([episode, Value]) => ({ episode, Value }));
+        // Create items array
+        var items = Object.keys(vis.characterSaidCounter).map(function(key) {
+        return [key, vis.characterSaidCounter[key]];
+        });
+
+        // Sort the array based on the second element
+        items.sort(function(first, second) {
+            return second[1] - first[1];
+        });
+
+        // Create a new array with only the first 5 items
+        vis.characterSaidCounter = items.slice(0, 5)
+
+        console.log(vis.characterSaidCounter)
 
         // Update the domain of y scale with new data
-        vis.yScale.domain([0, d3.max(vis.characterCount, d => d.Value)]);
+        vis.yScale.domain(vis.characterSaidCounter.map(d => d[0]));
 
-        // Yes I am updating the x axis twice, this is bad code but this fixes a issue with some labels not lining up.
+        // Update the y-axis
+        vis.svg.select(".y-axis")
+            .transition()
+            .duration(500)
+            .call(vis.yAxis);
+
         // Update the domain of x scale with new data
         vis.xScale.domain([]);
 
@@ -137,16 +191,16 @@ class SceneBargraph {
             .call(vis.xAxis);
 
         // Update the domain of x scale with new data
-        vis.xScale.domain(vis.characterCount.map(d => d.episode));
+        vis.xScale.domain([d3.max(vis.characterSaidCounter, d => d[1]), 0]);
 
         // Update the x-axis
         vis.svg.select(".x-axis")
             .call(vis.xAxis);
 
         // Convert characterCount to histogram bins
-        vis.histogramData = vis.characterCount.map(d => ({
-            episode: d.episode,
-            frequency: d.Value
+        vis.histogramData = vis.characterSaidCounter.map(d => ({
+            episode: d[0],
+            frequency: d[1]
         }));
 
         // Update existing bars
@@ -157,13 +211,14 @@ class SceneBargraph {
         vis.bars.enter().append("rect")
             .attr("class", "bar")
             .merge(vis.bars)
-            .attr("x", d => vis.xScale(d.episode))
-            .attr("width", vis.xScale.bandwidth())
-            .attr("y", d => vis.yScale(d.frequency))
-            .attr("height", d => vis.height - vis.yScale(d.frequency))
+            .transition()
+            .duration(500)
+            .attr("y", d => vis.yScale(d.episode))
+            .attr("x", 1)
+            .attr("height", vis.yScale.bandwidth())
+            .attr("width", d => vis.xScale(d.frequency))
             .style("fill", "#69b3a2");
 
         // Remove bars that are not needed
         vis.bars.exit().remove();
-    }
-}
+}}

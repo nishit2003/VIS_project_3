@@ -38,6 +38,8 @@ function setupUICallbacks() {
         value = document.getElementById("character-selection").value
         characterBarGraph.character = value
         characterBarGraph.updateVis()
+        sceneBarGraph.character = value
+        sceneBarGraph.updateVis()
     });
 
     document.getElementById("btnCreateWordCloud").addEventListener("click", function() {
