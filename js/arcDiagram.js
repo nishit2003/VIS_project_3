@@ -20,7 +20,7 @@ class ArcDiagram {
         vis.height = 300;
 
         vis.importantCharacter = ["Alfred", "Barbara", "Batman", "Bruce", "Bullock", "Catwoman", "Dick", "Gordon", "Harley",
-                                  "Hill", "Ivy", "Joker", "Robin", "Penguin", "Scarecrow", "Summer", "Thorne", "Two-face"]
+                                  "Hill", "Ivy", "Joker", "Robin", "Penguin", "Scarecrow", "Summer", "Thorne", "Two-Face"]
                                   
         // Append SVG to the parent element
         vis.svg = d3.select("#arc")
@@ -54,6 +54,7 @@ class ArcDiagram {
                 }
             })
         }
+
         
         vis.xScale = d3.scalePoint()
             .range([0, vis.width])
@@ -80,6 +81,14 @@ class ArcDiagram {
             .text(d => d.name)
             .style("text-anchor", "middle");
     
+        vis.svg.append('text')
+            .attr('x', vis.width / 2)
+            .attr('y', -40)
+            .attr('font-size', "16px")
+            .style('text-anchor', 'middle')
+            .attr('dy', '.71em')
+            .text(`Episode #${vis.episode}`);
+
         // Draw arcs between nodes
         vis.arcPaths = []
         for (const [key, value] of Object.entries(vis.sceneArray[vis.episode])) {

@@ -11,8 +11,8 @@ class SceneBargraph {
     constructor(_config, _data, _sceneArray, _character) {
         this.config = {
             parentElement: _config.parentElement,
-            containerWidth: 450,
-            containerHeight: 400,
+            containerWidth: 500,
+            containerHeight: 440,
             margin: _config.margin || { top: 50, right: 60, bottom: 50, left: 100 },
             tooltipPadding: _config.tooltipPadding || 15,
         };
@@ -40,7 +40,7 @@ class SceneBargraph {
         console.log(vis.data)
         vis.characterSaidCounter = {}
         vis.importantCharacter = ["Alfred", "Barbara", "Batman", "Bruce", "Bullock", "Catwoman", "Dick", "Gordon", "Harley",
-                                  "Hill", "Ivy", "Joker", "Robin", "Penguin", "Scarecrow", "Summer", "Thorne", "Two-face"]
+                                  "Hill", "Ivy", "Joker", "Robin", "Penguin", "Scarecrow", "Summer", "Thorne", "Two-Face"]
         vis.importantCharacter.forEach(d => {
             vis.characterSaidCounter[d] = 0
         })
@@ -102,7 +102,7 @@ class SceneBargraph {
         .attr('dy', '.71em')
         .style('text-anchor', 'middle')
         .attr('font-size', '16px')
-        .text("Episode #");
+        .text("Number of times talked");
 
         vis.svg.append('text')
             .attr('x', -65)
@@ -112,9 +112,10 @@ class SceneBargraph {
             .text("Frequency");
 
         vis.svg.append('text')
-            .attr('x', vis.width / 3)
+            .attr('x', vis.width / 2)
             .attr('y', -40)
             .attr('font-size', "16px")
+            .style('text-anchor', 'middle')
             .attr('dy', '.71em')
             .text(`Who ${vis.character} talks to the most`);
 
@@ -133,7 +134,22 @@ class SceneBargraph {
             .attr("x", 1)
             .attr("height", vis.yScale.bandwidth())
             .attr("width", d => vis.xScale(d.frequency))
-            .style("fill", "#69b3a2");
+            .style("fill", "#69b3a2")
+            .on('mouseover', function(event, d) {
+                // create a tool tip
+                d3.select("#tooltip")
+                    .style("display", "block")
+                    .style("left", event.pageX + vis.config.tooltipPadding + "px")
+                    .style("top", event.pageY + vis.config.tooltipPadding + "px")
+                    .style('opacity', 1)
+                    .style('z-index', 1000000)
+                    .html(
+                        `<div class="tooltip-label">
+                            <h3 class="tooltip-title">${vis.character}</h3>
+                            <h4>Lines of Dialogue: ${d.frequency}</h4>
+                        </div>`
+                    );
+                });
     }
 
     updateVis() {
@@ -217,7 +233,22 @@ class SceneBargraph {
             .attr("x", 1)
             .attr("height", vis.yScale.bandwidth())
             .attr("width", d => vis.xScale(d.frequency))
-            .style("fill", "#69b3a2");
+            .style("fill", "#69b3a2")
+            .on('mouseover', function(event, d) {
+                // create a tool tip
+                d3.select("#tooltip")
+                    .style("display", "block")
+                    .style("left", event.pageX + vis.config.tooltipPadding + "px")
+                    .style("top", event.pageY + vis.config.tooltipPadding + "px")
+                    .style('opacity', 1)
+                    .style('z-index', 1000000)
+                    .html(
+                        `<div class="tooltip-label">
+                            <h3 class="tooltip-title">${vis.character}</h3>
+                            <h4>Lines of Dialogue: ${d.frequency}</h4>
+                        </div>`
+                    );
+                });;
 
         // Remove bars that are not needed
         vis.bars.exit().remove();

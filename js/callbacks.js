@@ -80,7 +80,6 @@ function setupUICallbacks() {
 
     document.getElementById("episodes").addEventListener("change", function() {
         value = document.getElementById("episodes").value
-        console.log(value)
         arcDiagram.episode = value
         arcDiagram.updateVis()
     })
