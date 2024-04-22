@@ -1,5 +1,5 @@
 class ArcDiagram {
-    constructor(_config, _data, _scene, _episode) {
+    constructor(_config, _scene, _episode) {
         // Hardcoded node names
         this.config = {
             parentElement: _config.parentElement,
@@ -9,7 +9,6 @@ class ArcDiagram {
             tooltipPadding: _config.tooltipPadding || 15,
             };
     
-        this.data = _data;
         this.sceneArray = _scene
         this.episode = _episode
         this.initVis();

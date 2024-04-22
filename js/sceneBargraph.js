@@ -1,4 +1,4 @@
-class CharacterBarGraph {
+class SceneBargraph {
     // Class Constants & Attributes
     // TODO: Add if necessary
 
@@ -8,17 +8,18 @@ class CharacterBarGraph {
      * @param {Object}
      * @param {Array}
      */
-    constructor(_config, _data, _character) {
+    constructor(_config, _data, _sceneArray, _character) {
         this.config = {
-        parentElement: _config.parentElement,
-        containerWidth: 900,
-        containerHeight: 600,
-        margin: _config.margin || { top: 50, right: 60, bottom: 50, left: 100 },
-        tooltipPadding: _config.tooltipPadding || 15,
+            parentElement: _config.parentElement,
+            containerWidth: 900,
+            containerHeight: 850,
+            margin: _config.margin || { top: 50, right: 60, bottom: 50, left: 100 },
+            tooltipPadding: _config.tooltipPadding || 15,
         };
 
         this.data = _data;
-        this.character = _character
+        this.sceneArray = _sceneArray
+        this.character = _character;
         this.initVis();
     }
 
@@ -27,7 +28,7 @@ class CharacterBarGraph {
 
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
-
+        console.log(this.sceneArray)
         // Create SVG
         vis.svg = d3.select(vis.config.parentElement)
         .append('svg')
@@ -41,16 +42,16 @@ class CharacterBarGraph {
         // Convert the rollup map to an array of objects
         vis.characterCount = Array.from(vis.characterSaidCounts, ([episode, Value]) => ({ episode, Value }));
         
-        // X axis
-        vis.xScale = d3.scaleBand()
+        // Y axis
+        vis.yScale = d3.scaleBand()
             .range([0, vis.width])
             .domain(vis.characterCount.map(d => d.episode))
             .padding(0.2);
 
-        // Add Y axis
-        vis.yScale = d3.scaleLinear()
-            .domain([0, d3.max(vis.characterCount, d => d.Value)]) // Adjust domain based on the maximum frequency
-            .range([vis.height, 0]);
+        // Add X axis
+        vis.xScale = d3.scaleLinear()
+            .domain([d3.max(vis.characterCount, d => d.Value), 0]) // Adjust domain based on the maximum frequency
+            .range([0, vis.height]);
 
         // Initialize axes
         vis.xAxis = d3.axisBottom(vis.xScale)
@@ -103,10 +104,10 @@ class CharacterBarGraph {
             .data(vis.histogramData)
             .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", d => vis.xScale(d.episode))
-            .attr("y", d => vis.yScale(d.frequency))
-            .attr("width", vis.xScale.bandwidth())
-            .attr("height", d => vis.height - vis.yScale(d.frequency))
+            .attr("y", d => vis.yScale(d.episode))
+            .attr("x", 0)
+            .attr("height", vis.yScale.bandwidth())
+            .attr("width", d => vis.height - vis.xScale(d.frequency))
             .style("fill", "#69b3a2");
     }
 
