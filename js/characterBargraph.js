@@ -110,59 +110,62 @@ class CharacterBarGraph {
             .style("fill", "#69b3a2");
     }
 
-    updateVis() {
-        let vis = this;
+updateVis() {
+    let vis = this;
 
-        d3.selectAll("svg text")
+    // Update histogram title
+    d3.selectAll("svg text")
         .filter(function() {
-            return /Histogram$/.test(d3.select(this).text());  // Check if text begin with a "C"
+            return /Histogram$/.test(d3.select(this).text());
         })
         .text(`${vis.character} Histogram`);
 
-        vis.characterSaidCounts = d3.rollup(vis.data.filter(d => d.Person == vis.character), v => v.length, d => d.Episode);
+    // Compute new character counts
+    vis.characterSaidCounts = d3.rollup(vis.data.filter(d => d.Person === vis.character), v => v.length, d => d.Episode);
+    vis.characterCount = Array.from(vis.characterSaidCounts, ([episode, Value]) => ({ episode, Value }));
 
-        // Convert the rollup map to an array of objects
-        vis.characterCount = Array.from(vis.characterSaidCounts, ([episode, Value]) => ({ episode, Value }));
+    // Update the domain of y scale with new data
+    vis.yScale.domain([0, d3.max(vis.characterCount, d => d.Value)]);
 
-        // Update the domain of y scale with new data
-        vis.yScale.domain([0, d3.max(vis.characterCount, d => d.Value)]);
+    // Update the y-axis
+    vis.svg.select(".y-axis")
+        .transition()
+        .duration(500)
+        .call(vis.yAxis);
 
-        // Yes I am updating the x axis twice, this is bad code but this fixes a issue with some labels not lining up.
-        // Update the domain of x scale with new data
-        vis.xScale.domain([]);
+    // Update the domain of x scale with new data
+    vis.xScale.domain(vis.characterCount.map(d => d.episode));
 
-        // Update the x-axis
-        vis.svg.select(".x-axis")
-            .call(vis.xAxis);
+    // Update the x-axis
+    vis.svg.select(".x-axis")
+        .transition()
+        .duration(500)
+        .call(vis.xAxis);
 
-        // Update the domain of x scale with new data
-        vis.xScale.domain(vis.characterCount.map(d => d.episode));
+    // Convert characterCount to histogram bins
+    vis.histogramData = vis.characterCount.map(d => ({
+        episode: d.episode,
+        frequency: d.Value
+    }));
 
-        // Update the x-axis
-        vis.svg.select(".x-axis")
-            .call(vis.xAxis);
+    // Update existing bars
+    vis.bars = vis.svg.selectAll(".bar")
+        .data(vis.histogramData);
 
-        // Convert characterCount to histogram bins
-        vis.histogramData = vis.characterCount.map(d => ({
-            episode: d.episode,
-            frequency: d.Value
-        }));
+    // Enter new bars
+    vis.bars.enter().append("rect")
+        .attr("class", "bar")
+        .merge(vis.bars)
+        .transition()
+        .duration(500)
+        .attr("x", d => vis.xScale(d.episode))
+        .attr("width", vis.xScale.bandwidth())
+        .attr("y", d => vis.yScale(d.frequency))
+        .attr("height", d => vis.height - vis.yScale(d.frequency))
+        .style("fill", "#69b3a2");
 
-        // Update existing bars
-        vis.bars = vis.svg.selectAll(".bar")
-            .data(vis.histogramData);
+    // Remove bars that are not needed
+    vis.bars.exit().remove();
+}
 
-        // Enter new bars
-        vis.bars.enter().append("rect")
-            .attr("class", "bar")
-            .merge(vis.bars)
-            .attr("x", d => vis.xScale(d.episode))
-            .attr("width", vis.xScale.bandwidth())
-            .attr("y", d => vis.yScale(d.frequency))
-            .attr("height", d => vis.height - vis.yScale(d.frequency))
-            .style("fill", "#69b3a2");
-
-        // Remove bars that are not needed
-        vis.bars.exit().remove();
-    }
 }
