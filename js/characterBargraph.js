@@ -122,7 +122,10 @@ class CharacterBarGraph {
                             <h4>Lines of Dialogue: ${d.frequency}</h4>
                         </div>`
                     );
-                });
+                })
+            .on("mouseleave", () => {
+                d3.select("#tooltip").style("display", "none");
+            });
     }
 
 updateVis() {
@@ -186,7 +189,10 @@ updateVis() {
                         <h4>Lines of Dialogue: ${d.frequency}</h4>
                     </div>`
                 );
-            });
+            })
+        .on("mouseleave", () => {
+            d3.select("#tooltip").style("display", "none");
+        });
 
     // Remove bars that are not needed
     vis.bars.exit().remove();
