@@ -58,6 +58,9 @@ class CsvDataParser {
             }
 
             CsvDataParser.sceneArray = sceneArray
+            let selectElement = document.querySelector('[id=character-selection]');
+            let optionValues = [...selectElement.options].map(o => o.value)
+            CsvDataParser.importantCharacters = optionValues
             DataStore.filteredData = data;    // saves the filtered data to DataStore() class
         })
         .catch(error => console.error(error));
