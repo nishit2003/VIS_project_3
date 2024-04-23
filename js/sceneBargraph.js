@@ -8,7 +8,7 @@ class SceneBargraph {
      * @param {Object}
      * @param {Array}
      */
-    constructor(_config, _data, _sceneArray, _character) {
+    constructor(_config, _data, _sceneArray, _character, _characterList) {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: 500,
@@ -20,6 +20,7 @@ class SceneBargraph {
         this.data = _data;
         this.sceneArray = _sceneArray
         this.character = _character;
+        this.importantCharacter = _characterList
         this.initVis();
     }
 
@@ -39,8 +40,6 @@ class SceneBargraph {
 
         console.log(vis.data)
         vis.characterSaidCounter = {}
-        vis.importantCharacter = ["Alfred", "Barbara", "Batman", "Bruce", "Bullock", "Catwoman", "Dick", "Gordon", "Harley",
-                                  "Hill", "Ivy", "Joker", "Robin", "Penguin", "Scarecrow", "Summer", "Thorne", "Two-Face"]
         vis.importantCharacter.forEach(d => {
             vis.characterSaidCounter[d] = 0
         })
@@ -109,7 +108,7 @@ class SceneBargraph {
             .attr('y', -20)
             .attr('font-size', '16px')
             .attr('dy', '.71em')
-            .text("Frequency");
+            .text("Person");
 
         vis.svg.append('text')
             .attr('x', vis.width / 2)
@@ -135,7 +134,9 @@ class SceneBargraph {
             .attr("height", vis.yScale.bandwidth())
             .attr("width", d => vis.xScale(d.frequency))
             .style("fill", "#69b3a2")
-            .on('mouseover', function(event, d) {
+
+        vis.svg.selectAll(".bar")
+                    .on('mouseover', function(event, d) {
                 // create a tool tip
                 d3.select("#tooltip")
                     .style("display", "block")
@@ -234,7 +235,9 @@ class SceneBargraph {
             .attr("height", vis.yScale.bandwidth())
             .attr("width", d => vis.xScale(d.frequency))
             .style("fill", "#69b3a2")
-            .on('mouseover', function(event, d) {
+
+        vis.svg.selectAll(".bar")
+                    .on('mouseover', function(event, d) {
                 // create a tool tip
                 d3.select("#tooltip")
                     .style("display", "block")
@@ -244,11 +247,11 @@ class SceneBargraph {
                     .style('z-index', 1000000)
                     .html(
                         `<div class="tooltip-label">
-                            <h3 class="tooltip-title">${vis.character}</h3>
+                            <h3 class="tooltip-title">${d.episode}</h3>
                             <h4>Lines of Dialogue: ${d.frequency}</h4>
                         </div>`
                     );
-                });;
+                });
 
         // Remove bars that are not needed
         vis.bars.exit().remove();

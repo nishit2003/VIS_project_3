@@ -1,5 +1,5 @@
 class ArcDiagram {
-    constructor(_config, _scene, _episode) {
+    constructor(_config, _scene, _episode, _characterList) {
         // Hardcoded node names
         this.config = {
             parentElement: _config.parentElement,
@@ -11,6 +11,7 @@ class ArcDiagram {
     
         this.sceneArray = _scene
         this.episode = _episode
+        this.importantCharacter = _characterList
         this.initVis();
     }
 
@@ -18,9 +19,6 @@ class ArcDiagram {
         let vis = this;
         vis.width = 900;
         vis.height = 300;
-
-        vis.importantCharacter = ["Alfred", "Barbara", "Batman", "Bruce", "Bullock", "Catwoman", "Dick", "Gordon", "Harley",
-                                  "Hill", "Ivy", "Joker", "Robin", "Penguin", "Scarecrow", "Summer", "Thorne", "Two-Face"]
                                   
         // Append SVG to the parent element
         vis.svg = d3.select("#arc")

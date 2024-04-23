@@ -12,8 +12,8 @@ async function main() {
     // after data has been successfully parsed, lets create some visualizations
     wordCloud = new WordCloud();
     characterBarGraph = new CharacterBarGraph({ parentElement: '#graph'}, DataStore.filteredData, "Alfred");
-    arcDiagram = new ArcDiagram({ parentElement: '#arc'}, CsvDataParser.sceneArray, 3)
-    sceneBarGraph = new SceneBargraph({ parentElement: '#scene-bargraph'}, DataStore.filteredData, CsvDataParser.sceneArray, "Batman")
+    arcDiagram = new ArcDiagram({ parentElement: '#arc'}, CsvDataParser.sceneArray, 3, CsvDataParser.importantCharacters)
+    sceneBarGraph = new SceneBargraph({ parentElement: '#scene-bargraph'}, DataStore.filteredData, CsvDataParser.sceneArray, "Batman", CsvDataParser.importantCharacters)
     // TODO: Create any other visualizations here as well (charts, graphs, etc.)
 
     // calls method to populate the episode number combo box

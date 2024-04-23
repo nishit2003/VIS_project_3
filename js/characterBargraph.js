@@ -144,8 +144,6 @@ updateVis() {
 
     // Update the y-axis
     vis.svg.select(".y-axis")
-        .transition()
-        .duration(500)
         .call(vis.yAxis);
 
     // Update the domain of x scale with new data
@@ -153,8 +151,6 @@ updateVis() {
 
     // Update the x-axis
     vis.svg.select(".x-axis")
-        .transition()
-        .duration(500)
         .call(vis.xAxis);
 
     // Convert characterCount to histogram bins
@@ -171,8 +167,6 @@ updateVis() {
     vis.bars.enter().append("rect")
         .attr("class", "bar")
         .merge(vis.bars)
-        .transition()
-        .duration(500)
         .attr("x", d => vis.xScale(d.episode))
         .attr("width", vis.xScale.bandwidth())
         .attr("y", d => vis.yScale(d.frequency))
