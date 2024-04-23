@@ -5,34 +5,64 @@ function setupUICallbacks() {
         const characterDescription = document.getElementById('character-description');
 
         switch(selectedCharacter) {
+            case 'Alfred':
+                characterDescription.textContent = "Alfred Pennyworth is the loyal butler and father figure to Bruce Wayne, also known as Batman. With his unwavering support, wisdom, and extensive knowledge, Alfred assists Batman both in and out of the Batcave, ensuring the Dark Knight's success in his mission to protect Gotham City.";
+                break;
+            case 'Barbara':
+                characterDescription.textContent = "Barbara Gordon, also known as Batgirl and Oracle, is the daughter of Commissioner James Gordon and a skilled crime-fighter in her own right. As Batgirl, Barbara fights alongside Batman and Robin to defend Gotham City, while as Oracle, she provides invaluable assistance to the superhero community through her technological expertise and strategic planning.";
+                break;
             case 'Batman':
                 characterDescription.textContent = "Batman, also known as the Dark Knight, is a vigilante superhero who protects Gotham City from crime and corruption. With his vast wealth, advanced technology, and martial arts skills, Batman strikes fear into the hearts of criminals.";
                 break;
-            case 'Bruce Wayne':
+            case 'Bruce':
                 characterDescription.textContent = "Bruce Wayne is the billionaire philanthropist owner of Wayne Enterprises and the secret identity of Batman. Haunted by the murder of his parents, Bruce dedicates his life to fighting crime and seeking justice for the citizens of Gotham City.";
+                break;
+            case 'Bullock':
+                characterDescription.textContent = "Harvey Bullock is a gruff and seasoned detective in the Gotham City Police Department. Though initially skeptical of Batman's methods, Bullock eventually becomes one of his most trusted allies, working alongside the Dark Knight to combat the city's criminal underworld.";
                 break;
             case 'Catwoman':
                 characterDescription.textContent = "Catwoman, also known as Selina Kyle, is a skilled thief and occasional ally of Batman. With her agility, stealth, and mastery of martial arts, Catwoman navigates the morally gray areas of Gotham City, often crossing paths with both heroes and villains.";
                 break;
-            case 'Commissioner Gordon':
-                characterDescription.textContent = "Commissioner James Gordon is the head of the Gotham City Police Department and one of Batman's most trusted allies. With unwavering integrity and a dedication to justice, Gordon works tirelessly to maintain law and order in Gotham City, often relying on Batman's help to combat the city's rampant crime and corruption.";
+            case 'Dick':
+                characterDescription.textContent = "Dick Grayson, also known as Robin and later Nightwing, is the loyal sidekick and partner of Batman. With his acrobatic skills, detective prowess, and unwavering dedication to justice, Dick assists Batman in his mission to protect Gotham City from villains and threats.";
                 break;
             case 'Gordon':
-                characterDescription.textContent = "Gordon is a recurring character in the Batman universe, often referring to Commissioner James Gordon. As an emblem of integrity and justice, Gordon serves as a beacon of hope in Gotham City, striving to uphold the law and protect its citizens from the city's many dangers.";
+                characterDescription.textContent = "Commissioner James Gordon is the head of the Gotham City Police Department and one of Batman's most trusted allies. With unwavering integrity and a dedication to justice, Gordon works tirelessly to maintain law and order in Gotham City, often relying on Batman's help to combat the city's rampant crime and corruption.";
                 break;
-            case 'Maven':
-                characterDescription.textContent = "Maven is a lesser-known character in the Batman mythos, often associated with the criminal underworld of Gotham City. With a mysterious and enigmatic persona, Maven operates in the shadows, manipulating events from behind the scenes to further their own agenda.";
+            case 'Harley':
+                characterDescription.textContent = "Harley Quinn, formerly known as Dr. Harleen Quinzel, is a psychiatrist turned criminal and love interest of the Joker. With her acrobatic skills, unpredictable nature, and affection for her 'puddin,' Harley Quinn wreaks havoc in Gotham City while maintaining a complex relationship with Batman's greatest nemesis.";
                 break;
-            case 'Mr. Stern':
-                characterDescription.textContent = "Mr. Stern is a minor character in the Batman universe, known for his involvement in Gotham City's financial sector. As a wealthy businessman with ties to various criminal enterprises, Mr. Stern often finds himself embroiled in the city's intrigue and corruption.";
+            case 'Hill':
+                characterDescription.textContent = "Ellen Yindel is a police officer and later commissioner in the Gotham City Police Department. With a strong sense of duty and a commitment to justice, Yindel works to uphold law and order in Gotham City, often clashing with Batman over his vigilante activities.";
                 break;
-            case 'Red Claw':
-                characterDescription.textContent = "Red Claw is a formidable villain and terrorist leader who poses a significant threat to Gotham City. With her ruthless tactics and fanatical ideology, Red Claw seeks to destabilize the city and challenge Batman's authority at every turn.";
+            case 'Ivy':
+                characterDescription.textContent = "Poison Ivy, also known as Dr. Pamela Isley, is an eco-terrorist and botanical genius with the ability to control plants. With her fierce devotion to nature and disdain for humanity's destructive tendencies, Poison Ivy poses a significant threat to Gotham City's inhabitants, often clashing with Batman and other heroes.";
+                break;
+            case 'Joker':
+                characterDescription.textContent = "The Joker is a psychotic and unpredictable criminal mastermind who serves as Batman's archenemy. With his trademark grin and chaotic personality, the Joker delights in creating chaos and tormenting the citizens of Gotham City, constantly challenging Batman's moral code and sanity.";
+                break;
+            case 'Robin':
+                characterDescription.textContent = "Robin, also known as Dick Grayson, is the loyal sidekick and partner of Batman. With his acrobatic skills, detective prowess, and unwavering dedication to justice, Robin assists Batman in his mission to protect Gotham City from villains and threats.";
+                break;
+            case 'Penguin':
+                characterDescription.textContent = "The Penguin, also known as Oswald Cobblepot, is a cunning and ruthless crime lord who wields considerable influence in Gotham City's underworld. With his keen intellect and penchant for umbrellas, the Penguin schemes to control Gotham's criminal enterprises while clashing with Batman and other heroes.";
+                break;
+            case 'Scarecrow':
+                characterDescription.textContent = "Scarecrow, also known as Dr. Jonathan Crane, is a brilliant psychologist and sadistic criminal who uses fear as a weapon. With his fear-inducing toxins and psychological manipulation, Scarecrow strikes terror into the hearts of Gotham City's inhabitants, often serving as a formidable adversary to Batman and other heroes.";
+                break;
+            case 'Summer':
+                characterDescription.textContent = "Summer Gleeson is a journalist and news anchor in Gotham City, known for her reporting on the city's crime and corruption. With her dedication to uncovering the truth and holding those in power accountable, Summer plays a crucial role in informing the public about the ongoing struggles in Gotham City.";
+                break;
+            case 'Thorne':
+                characterDescription.textContent = "Rupert Thorne is a powerful crime lord and businessman who controls much of Gotham City's underworld. With his vast resources and connections, Thorne poses a significant threat to Batman and the city's inhabitants, often engaging in ruthless schemes to expand his influence and eliminate his rivals.";
+                break;
+            case 'Two-face':
+                characterDescription.textContent = "Two-Face, also known as Harvey Dent, is a former district attorney of Gotham City who becomes a criminal mastermind after half of his face is disfigured. Driven by a twisted sense of justice, Two-Face makes decisions based on the flip of a coin, representing the duality of good and evil.";
                 break;
             default:
                 characterDescription.textContent = ""; 
         }
-
+        
         characterDescription.style.display = 'block';
 
         value = document.getElementById("character-selection").value
