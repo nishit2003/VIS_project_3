@@ -109,7 +109,7 @@ class ArcDiagram {
             vis.svg.append("path")
                 .attr("d", path)
                 .style("fill", "none")
-                .attr("stroke", "black")
+                .attr("stroke", "white")
         });
 
         vis.circles
