@@ -110,7 +110,7 @@ function setupUICallbacks() {
     });
 
     document.getElementById("btnBackwards").addEventListener("click", function() {
-        //console.log("btnCreateIterableDataset clicked!");   // for testing/development's sake
+        //console.log("btnBackwards clicked!");   // for testing/development's sake
 
         if (Object.keys(DataStore.iterableDataset).length === 0) {
             return;     // first of all, if there is currently no iterable dictionary, we return without doing anything
@@ -148,7 +148,7 @@ function setupUICallbacks() {
     });
 
     document.getElementById("btnForwards").addEventListener("click", function() {
-        //console.log("btnCreateIterableDataset clicked!");   // for testing/development's sake
+        //console.log("btnForwards clicked!");   // for testing/development's sake
 
         if (Object.keys(DataStore.iterableDataset).length === 0) {
             return;     // first of all, if there is currently no iterable dictionary, we return without doing anything
@@ -183,6 +183,29 @@ function setupUICallbacks() {
         // TODO: Remove after we remove the label
         const lblIterableDataset = document.getElementById("iterable-dataset-display");
         lblIterableDataset.textContent = currDatasetValue;
+    });
+
+    document.getElementById("btnWordSearch").addEventListener("click", function() {
+        //console.log("btnWordSearch clicked!");   // for testing/development's sake
+
+        // grab the keyword from the search textbox & convert the keyword to lowercase for case-insensitive matching
+        const searchKeyword = document.getElementById("txtWordSearch").value.toLowerCase();
+        if (searchKeyword == undefined || searchKeyword == "") { return; }  // if no word is entered, return immediately
+
+        // filters from raw data, all entries in which the supplied word/phrase is found
+        DataStore.wordSearchData = DataStore.rawData.filter(d => {
+            let inTitle = String(d.Title).toLocaleLowerCase().includes(searchKeyword);
+            let inScene = String(d.Scene).toLocaleLowerCase().includes(searchKeyword);
+            let inPerson = String(d.Person).toLocaleLowerCase().includes(searchKeyword);
+            let inSaid = String(d.Said).toLocaleLowerCase().includes(searchKeyword);
+            return (inTitle) || (inScene) || (inPerson) || (inSaid);
+        })
+
+        if (DataStore.wordSearchData.length == 0) { return; }   // if resulting dataset is empty, return immediately
+        //console.log("DataStore.wordSearchData:\n", DataStore.wordSearchData);    // testing
+
+        // TODO: Create a visualization of some sort with this dataset?
+        barGraph = new WordSearchBarGraph({ parentElement: '#wordSearchBarGraph'}, DataStore.wordSearchData, searchKeyword);
     });
 
     // TODO: Add more callbacks as necessary:

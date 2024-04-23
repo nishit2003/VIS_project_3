@@ -14,13 +14,15 @@ class WordCloud {
     //console.log("Attempting to create word cloud.");  // testing
     //console.log("Words in word cloud:", DataStore.wordCloudArray);  // testing
 
+    this.clearVis();    // remove old visualization
+
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 450 - margin.left - margin.right,
     height = 450 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    var svg = d3.select("#wordcloud1").append("svg")
+    var svg = d3.select("#wordcloud").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
@@ -50,5 +52,13 @@ class WordCloud {
             })
             .text(function(d) { return d.text; });
     }
+  }
+
+  // method which clears the old visualization
+  clearVis() {
+    // Remove existing SVG element
+    d3.select("#wordcloud")
+        .select("svg")
+        .remove();
   }
 }
