@@ -1,6 +1,6 @@
 /* This script will act as the main "runner" of the entire application. */
 // some script-level (global) variables
-let wordCloud, characterBarGraph, arcDiagram, barGraph;
+let wordCloud, characterBarGraph, arcDiagram, iterableBarGraph;
 
 // Because we've moved the CSV data parsing into a separate module, we need to ensure the rest of the program waits for CSV parsing to complete.
 //  If you look at the in-class examples, most of the visualization creation is done INSIDE of the "d3.csv()" tag, so the synchronization is encapsulated.

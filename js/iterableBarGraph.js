@@ -1,4 +1,4 @@
-class WordSearchBarGraph {
+class IterableBarGraph {
     // Class Constants & Attributes
     // TODO: Add if necessary
 
@@ -13,7 +13,7 @@ class WordSearchBarGraph {
             parentElement: _config.parentElement,
             containerWidth: 900,
             containerHeight: 600,
-            margin: _config.margin || { top: 50, right: 60, bottom: 50, left: 100 },
+            margin: _config.margin || { top: 50, right: 60, bottom: 150, left: 100 },
             tooltipPadding: _config.tooltipPadding || 15,
         };
 
@@ -39,7 +39,7 @@ class WordSearchBarGraph {
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
         // Define scales
-        const LAST_EPISODE_NUM = 60     // there are 60 episodes in the dataset. Could be parsed dynamically if needed
+        const LAST_EPISODE_NUM = 60;    // there are 60 episodes in the dataset. Could be parsed dynamically if needed
         vis.xScale = d3.scaleLinear()
             .range([0, vis.width])
             .domain([1, LAST_EPISODE_NUM]);
@@ -48,10 +48,29 @@ class WordSearchBarGraph {
         vis.yScale = d3.scaleLinear().range([vis.height, 0]);
 
         // Initialize axes
-        vis.xAxis = d3.axisBottom(vis.xScale)
-        vis.yAxis = d3.axisLeft(vis.yScale)
+        vis.histTitle = "";
+        vis.xAxis = d3.axisBottom(vis.xScale);
+        vis.yAxis = d3.axisLeft(vis.yScale);
         
-        vis.attributeCounts = d3.rollup(vis.data, v => v.length, d => d.Episode);
+        // bar graph displays different values on X axis depending on the selected attribute & generated iterable dataset
+        const selectedColumnHeader = document.getElementById("data-column-headers").value;
+        if (selectedColumnHeader == "Episode") {
+            vis.attributeCounts = d3.rollup(vis.data, v => v.length, d => d.Person);
+            vis.histTitle = "Episode ";
+            vis.xAxisTitle = "Person";
+        }
+        else if (selectedColumnHeader == "Title" || selectedColumnHeader == "Scene") {
+            vis.attributeCounts = d3.rollup(vis.data, v => v.length, d => d.Person);
+            vis.xAxisTitle = "Person";
+        }
+        else if (selectedColumnHeader == "Person") {
+            vis.attributeCounts = d3.rollup(vis.data, v => v.length, d => d.Scene);
+            vis.xAxisTitle = "Scene";
+        }
+        else {
+            vis.attributeCounts = d3.rollup(vis.data, v => v.length, d => d.Episode);
+            vis.xAxisTitle = "Episode";
+        }
 
         // Convert the rollup map to an array of objects
         vis.attrCount = Array.from(vis.attributeCounts, ([episode, Value]) => ({ episode, Value }));
@@ -80,6 +99,7 @@ class WordSearchBarGraph {
             .attr("transform", `translate(0, ${vis.height})`) // Corrected translation
             .call(vis.xAxis)
             .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-65)")   // rotates x axis tick mark labels
             .style("text-anchor", "end");;
 
         // Append Y axis
@@ -87,14 +107,14 @@ class WordSearchBarGraph {
             .attr("class", "y-axis")
             .call(vis.yAxis);
 
-        // Append both axis titles
+        // Append both axis titles       
         vis.svg.append('text')
-            .attr('y', vis.height + 37)
+            .attr('y', vis.height + 50)
             .attr('x', vis.width / 2) // Set x position to half of the SVG width
             .attr('dy', '.71em')
             .style('text-anchor', 'middle')
             .attr('font-size', '16px')
-            .text("Episode #");
+            .text(vis.xAxisTitle);
 
         vis.svg.append('text')
             .attr('x', -65)
@@ -108,7 +128,9 @@ class WordSearchBarGraph {
             .attr('y', -40)
             .attr('font-size', "16px")
             .attr('dy', '.71em')
-            .text(`Histogram of '${vis.currAttribute.toLocaleUpperCase()}'`);
+            .text(`Histogram of ${vis.histTitle}'${String(vis.currAttribute).toLocaleUpperCase()}'`);
+        
+        
 
         // Convert attrCount to histogram bins
         vis.histogramData = vis.attrCount.map(d => ({
