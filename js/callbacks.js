@@ -84,6 +84,13 @@ function setupUICallbacks() {
         arcDiagram.updateVis()
     })
 
+    document.getElementById('data-column-headers').addEventListener('change', function() {
+        // disable iterable dataset controls until new one is generated, since selected attribute changed
+        document.getElementById("btnCreateIterableDataset").disabled = false;
+        document.getElementById("btnBackwards").disabled = true;
+        document.getElementById("btnForwards").disabled = true;
+    });
+
     document.getElementById("btnCreateIterableDataset").addEventListener("click", function() {
         //console.log("btnCreateIterableDataset clicked!");   // for testing/development's sake
 
@@ -104,15 +111,19 @@ function setupUICallbacks() {
                 DataStore.iterableDataset[d[selectedColumnHeader]] = [d];
             }
         });
-        console.log("DataStore.iterableDataset:", DataStore.iterableDataset);  // testing
 
-        // resets the label (display) for user & the iterable dataset index
-        document.getElementById("iterable-dataset-display").textContent = "[PLACEHOLDER]";   // TODO: Remove after we remove the label
-        DataStore.iterableIndex = 0;    // TODO: Remove after we remove the label
+        // resets the bar graph for user & the iterable dataset index
+        if (iterableBarGraph) { iterableBarGraph.clearVis(); }  // if an iterable dataset bar graph already exists, clear it
+        DataStore.iterableIndex = 0;
+
+        // re-enable iterable dataset controls and disable the create iterable dataset button until user changes selected attribute
+        document.getElementById("btnCreateIterableDataset").disabled = true;
+        document.getElementById("btnBackwards").disabled = false;
+        document.getElementById("btnForwards").disabled = false;
     });
 
     document.getElementById("btnBackwards").addEventListener("click", function() {
-        //console.log("btnCreateIterableDataset clicked!");   // for testing/development's sake
+        //console.log("btnBackwards clicked!");   // for testing/development's sake
 
         if (Object.keys(DataStore.iterableDataset).length === 0) {
             return;     // first of all, if there is currently no iterable dictionary, we return without doing anything
@@ -138,19 +149,13 @@ function setupUICallbacks() {
         let currDatasetKey = iterableDatasetKeys[DataStore.iterableIndex];  // grabs current dataset key
         let currDataset = DataStore.iterableDataset[currDatasetKey];        // grabs the dataset itself
         let currDatasetValue = currDataset[0][selectedColumnHeader];        // grabs value of first entry for attributed currently selected
-    
-        // TODO: Remove console logs in future:
-        //console.log("currDatasetKey:\n", currDatasetKey);  // testing
-        //console.log("currDataset:\n", currDataset);  // testing
-        //console.log("currDatasetValue:\n", currDatasetValue);  // testing
-        
-        // TODO: Remove after we remove the label
-        const lblIterableDataset = document.getElementById("iterable-dataset-display");
-        lblIterableDataset.textContent = currDatasetValue;
+
+        // create a bar graph to display resulting dataset
+        iterableBarGraph = new IterableBarGraph({parentElement: '#iterableDatasetBarGraph'}, currDataset, currDatasetValue);
     });
 
     document.getElementById("btnForwards").addEventListener("click", function() {
-        //console.log("btnCreateIterableDataset clicked!");   // for testing/development's sake
+        //console.log("btnForwards clicked!");   // for testing/development's sake
 
         if (Object.keys(DataStore.iterableDataset).length === 0) {
             return;     // first of all, if there is currently no iterable dictionary, we return without doing anything
@@ -176,15 +181,31 @@ function setupUICallbacks() {
         let currDatasetKey = iterableDatasetKeys[DataStore.iterableIndex];  // grabs current dataset key
         let currDataset = DataStore.iterableDataset[currDatasetKey];        // grabs the dataset itself
         let currDatasetValue = currDataset[0][selectedColumnHeader];        // grabs value of first entry for attributed currently selected
-    
-        // TODO: Remove console logs in future:
-        //console.log("currDatasetKey:\n", currDatasetKey);  // testing
-        //console.log("currDataset:\n", currDataset);  // testing
-        //console.log("currDatasetValue:\n", currDatasetValue);  // testing
-        
-        // TODO: Remove after we remove the label
-        const lblIterableDataset = document.getElementById("iterable-dataset-display");
-        lblIterableDataset.textContent = currDatasetValue;
+
+        // create a bar graph to display resulting dataset
+        iterableBarGraph = new IterableBarGraph({parentElement: '#iterableDatasetBarGraph'}, currDataset, currDatasetValue);
+    });
+
+    document.getElementById("btnWordSearch").addEventListener("click", function() {
+        //console.log("btnWordSearch clicked!");   // for testing/development's sake
+
+        // grab the keyword from the search textbox & convert the keyword to lowercase for case-insensitive matching
+        const searchKeyword = document.getElementById("txtWordSearch").value.toLowerCase();
+        if (searchKeyword == undefined || searchKeyword == "") { return; }  // if no word is entered, return immediately
+
+        // filters from raw data, all entries in which the supplied word/phrase is found
+        DataStore.wordSearchData = DataStore.rawData.filter(d => {
+            let inTitle = String(d.Title).toLocaleLowerCase().includes(searchKeyword);
+            let inScene = String(d.Scene).toLocaleLowerCase().includes(searchKeyword);
+            let inPerson = String(d.Person).toLocaleLowerCase().includes(searchKeyword);
+            let inSaid = String(d.Said).toLocaleLowerCase().includes(searchKeyword);
+            return (inTitle) || (inScene) || (inPerson) || (inSaid);
+        })
+
+        if (DataStore.wordSearchData.length == 0) { return; }   // if resulting dataset is empty, return immediately
+
+        // create a bar graph to display resulting dataset
+        iterableBarGraph = new WordSearchBarGraph({ parentElement: '#wordSearchBarGraph'}, DataStore.wordSearchData, searchKeyword);
     });
 
     // TODO: Add more callbacks as necessary:
