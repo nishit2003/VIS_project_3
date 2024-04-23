@@ -57,7 +57,6 @@ class CsvDataParser {
                 }
             }
 
-            //console.log("Scene Array:", sceneArray);    // testing
             CsvDataParser.sceneArray = sceneArray
             DataStore.filteredData = data;    // saves the filtered data to DataStore() class
         })

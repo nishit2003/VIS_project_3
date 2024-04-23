@@ -11,9 +11,6 @@ class WordCloud {
   // Class Methods
   // method which creates the word cloud
   createWordCloud() {
-    //console.log("Attempting to create word cloud.");  // testing
-    //console.log("Words in word cloud:", DataStore.wordCloudArray);  // testing
-
     this.clearVis();    // remove old visualization
 
     // set the dimensions and margins of the graph

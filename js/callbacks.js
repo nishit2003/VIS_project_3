@@ -110,10 +110,9 @@ function setupUICallbacks() {
             }
         });
 
-        // resets the label (display) for user & the iterable dataset index
+        // resets the bar graph for user & the iterable dataset index
         if (iterableBarGraph) { iterableBarGraph.clearVis(); }  // if an iterable dataset bar graph already exists, clear it
-        document.getElementById("iterable-dataset-display").textContent = "[PLACEHOLDER]";   // TODO: Remove after we remove the label
-        DataStore.iterableIndex = 0;    // TODO: Remove after we remove the label
+        DataStore.iterableIndex = 0;
 
         // re-enable iterable dataset controls and disable the create iterable dataset button until user changes selected attribute
         document.getElementById("btnCreateIterableDataset").disabled = true;
@@ -148,10 +147,6 @@ function setupUICallbacks() {
         let currDatasetKey = iterableDatasetKeys[DataStore.iterableIndex];  // grabs current dataset key
         let currDataset = DataStore.iterableDataset[currDatasetKey];        // grabs the dataset itself
         let currDatasetValue = currDataset[0][selectedColumnHeader];        // grabs value of first entry for attributed currently selected
-    
-        // TODO: Remove after we remove the label
-        const lblIterableDataset = document.getElementById("iterable-dataset-display");
-        lblIterableDataset.textContent = currDatasetValue;
 
         // create a bar graph to display resulting dataset
         iterableBarGraph = new IterableBarGraph({parentElement: '#iterableDatasetBarGraph'}, currDataset, currDatasetValue);
@@ -184,10 +179,6 @@ function setupUICallbacks() {
         let currDatasetKey = iterableDatasetKeys[DataStore.iterableIndex];  // grabs current dataset key
         let currDataset = DataStore.iterableDataset[currDatasetKey];        // grabs the dataset itself
         let currDatasetValue = currDataset[0][selectedColumnHeader];        // grabs value of first entry for attributed currently selected
-    
-        // TODO: Remove after we remove the label
-        const lblIterableDataset = document.getElementById("iterable-dataset-display");
-        lblIterableDataset.textContent = currDatasetValue;
 
         // create a bar graph to display resulting dataset
         iterableBarGraph = new IterableBarGraph({parentElement: '#iterableDatasetBarGraph'}, currDataset, currDatasetValue);
