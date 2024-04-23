@@ -1,94 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>VIS Project 3</title>
-   <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gotham City Visualization</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+
 <body>
-   <header>
-      <h1>Welcome to Batman's World </h1>
-      <p>
-         "Batman: The Animated Series" is a classic 1990s show known for its dark animation style and mature storytelling, following Batman's adventures in Gotham City as he battles iconic villains like the Joker.</p>
-   </header>
+      <!-- Information Button -->
+      <div class="info-button" onclick="openModal()">
+         <i class="fa fa-info"></i> 
+   </div>
 
-   <div id="maincontent">
-      <!-- Div for configuration stuff (combo boxes & buttons) -->
-      <div id="configuration">
-         <label>SELECT COLUMN HEADER</label>
-         <select id="data-column-headers">
-            <option value="hide">- COLUMN HEADER -</option>
-         </select>
-         <button id="btnCreateIterableDataset">Create Iterable Dataset</button>
-         <button id="btnBackwards" disabled>&lt;-- Iterate Backwards</button>
-         <button id="btnForwards" disabled>Iterate Forwards --&gt;</button>
+   <div id="myModal" class="modal">
+         <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>How To Use This Application</h2>
+         </div>
+   </div>
+    <header>
+        <h1>Welcome to Gotham City</h1>
+        <p>"Batman: The Animated Series" is a classic 1990s show known for its dark animation style and mature storytelling, following Batman's adventures in Gotham City as he battles iconic villains like the Joker.</p>
+    </header>
 
-         <label>SEARCH FOR A WORD/PHRASE</label>
-         <input type="text" id="txtWordSearch" placeholder="Word/Phrase to Search">
-         <button type="submit" id="btnWordSearch">Submit Word/Phrase</button><br><br><br>
+    <div id="maincontent">
+        <!-- Div for configuration stuff (combo boxes & buttons) -->
+        <div id="configuration">
+            <div class="configuration-section">
+               <label>SELECT COLUMN HEADER</label>
+               <select id="data-column-headers">
+                  <option value="hide">- COLUMN HEADER -</option>
+               </select>
+               <button id="btnCreateIterableDataset">Create Iterable Dataset</button>
+               <div class="button-group">
+                  <button id="btnBackwards" disabled>&lt;-- Backwards</button>
+                  <button id="btnForwards" disabled>Forwards --&gt;</button>
+               </div>
+            </div>
+        
+            <div class="configuration-section">
+                  <label>SEARCH FOR A WORD/PHRASE</label>
+                  <input type="text" id="txtWordSearch" placeholder="Word/Phrase to Search">
+                  <button type="submit" id="btnWordSearch">Submit Word/Phrase</button>
+            </div>
+        
+            <div class="configuration-section">
+                  <label>SELECT AN EPISODE</label>
+                  <select id="episodes">
+                     <option value="hide">-- EPISODE --</option>
+                  </select>
 
-         <label>SELECT AN EPISODE</label>
-         <select id="episodes">
-            <option value="hide">-- EPISODE --</option>
-         </select>
+                  <label>SELECT AN CHARACTER</label>
+                     <select id="character-selection">
+                        <option value="hide">-- CHARACTER --</option>
+                        <option value="Alfred">Alfred</option>
+                        <option value="Barbara">Barbara Gordon</option>
+                        <option value="Batman">Batman</option>
+                        <option value="Bruce">Bruce Wayne</option>
+                        <option value="Bullock">Harvey Bullock</option>
+                        <option value="Catwoman">Catwoman</option>
+                        <option value="Dick">Dick Grayson</option>
+                        <option value="Gordon">James Gordon</option>
+                        <option value="Harley">Harley Quinn</option>
+                        <option value="Hill">Hamilton Hill</option>
+                        <option value="Ivy">Poison Ivy</option>
+                        <option value="Joker">Joker</option>
+                        <option value="Maven">Maven</option>
+                        <option value="Mr. Stern">Mr. Stern</option>
+                        <option value="Red Claw">Red Claw</option>
+                        <option value="Robin">Robin</option>
+                        <option value="Penguin">Penguin</option>
+                        <option value="Scarecrow">Scarecrow</option>
+                        <option value="Summer">Summer Gleeson</option>
+                        <option value="Thorne">Rupert Thorne</option>
+                        <option value="Two-Face">Two-Face</option>
+                     </select>
 
-         <label>SELECT AN CHARACTER</label>
-         <select id="character-selection">
-               <option value="Alfred">Alfred</option>
-               <option value="Barbara">Barbara Gordon</option>
-               <option value="Batman">Batman</option>
-               <option value="Bruce">Bruce Wayne</option>
-               <option value="Bullock">Harvey Bullock</option>
-               <option value="Catwoman">Catwoman</option>
-               <option value="Dick">Dick Grayson</option>
-               <option value="Gordon">James Gordon</option>
-               <option value="Harley">Harley Quinn</option>
-               <option value="Hill">Hamilton Hill</option>
-               <option value="Ivy">Poison Ivy</option>
-               <option value="Joker">Joker</option>
-               <option value="Maven">Maven</option>
-               <option value="Mr. Stern">Mr. Stern</option>
-               <option value="Red Claw">Red Claw</option>
-               <option value="Robin">Robin</option>
-               <option value="Penguin">Penguin</option>
-               <option value="Scarecrow">Scarecrow</option>
-               <option value="Summer">Summer Gleeson</option>
-               <option value="Thorne">Rupert Thorne</option>
-               <option value="Two-Face">Two-Face</option>
-         </select>
-         
-         <button id="btnCreateWordCloud">Create Word Cloud</button>
-         <p id="character-description" style="display: none;"></p>
-      </div>
+                  <button id="btnCreateWordCloud">Create Word Cloud</button>
+                  <p id="character-description" style="display: none;"></p>
+            </div>
+         </div>
 
-      <!-- Div for the actual visualizations themselves -->
-      <div id="visualizations">
-         <div id="iterableDatasetBarGraph"></div>
-         <div id="wordSearchBarGraph"></div>
-         <div id="wordcloud"></div>
-         <div id="graph"></div>
-         <div id="arc"></div>
-         <div id="scene-bargraph"></div>
-         <div id="tooltip"></div>
-   </div> <!-- End of 'maincontent' div -->
+        <!-- Div for the actual visualizations themselves -->
+        <div id="visualizations">
+            <button id="toggleIterableDatasetBarGraph">Toggle Iterable Dataset Bar Graph</button>
+            <div id="iterableDatasetBarGraph" style="display: none;">
+            </div>
+            <button id="toggleWordSearchBarGraph">Toggle Word Search Bar Graph</button>
+            <div id="wordSearchBarGraph" style="display: none;">
+            </div>
+            <button id="toggleWordCloud">Toggle Word Cloud</button>
+            <div id="wordcloud" style="display: none;">
+            </div>
+            <button id="toggleGraph">Toggle Graph</button>
+            <div id="graph" style="display: none;">
+            </div>
+            <button id="toggleArc">Toggle Arc</button>
+            <div id="arc" style="display: none;">
+            </div>
+            <button id="toggleSceneBargraph">Toggle Scene Bargraph</button>
+            <div id="scene-bargraph" style="display: none;">
+            </div>
+            
+        </div>
+    </div> <!-- End of 'maincontent' div -->
+    <div id="tooltip"></div>
+    <!-- JavaScript Files -->
+    <script src="js/d3.v6.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+    <script src="js/arcDiagram.js" type="text/javascript"></script>
+    <script src="js/characterBargraph.js" type="text/javascript"></script>
+    <script src="js/wordSearchBarGraph.js" type="text/javascript"></script>
+    <script src="js/sceneBargraph.js" type="text/javascript"></script>
+    <script src="js/datastore.js" type="text/javascript"></script>
+    <script src="js/csvdataparser.js" type="text/javascript"></script>
+    <script src="js/wordcloud.js" type="text/javascript"></script>
+    <script src="js/iterableBarGraph.js" type="text/javascript"></script>
+    <script src="js/extractwords.js" type="text/javascript"></script>
+    <script src="js/callbacks.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript"></script>
 
-   <!--
-      JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters).
-      Library files (D3 & WordCloud) first, followed by custom JS classes.
-   -->
-   <script src="js/d3.v6.min.js" type="text/javascript"></script>
-   <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
-   <script src="js/arcDiagram.js" type="text/javascript"></script>
-   <script src="js/characterBargraph.js" type="text/javascript"></script>
-   <script src="js/wordSearchBarGraph.js" type="text/javascript"></script>
-   <script src="js/sceneBargraph.js" type="text/javascript"></script>
-   <script src="js/datastore.js" type="text/javascript"></script>
-   <script src="js/csvdataparser.js" type="text/javascript"></script>
-   <script src="js/wordcloud.js" type="text/javascript"></script>
-   <script src="js/iterableBarGraph.js" type="text/javascript"></script>
-   <script src="js/extractwords.js" type="text/javascript"></script>
-   <script src="js/callbacks.js" type="text/javascript"></script>
-   <script src="js/main.js" type="text/javascript"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+         const toggleIterableDatasetBarGraphButton = document.getElementById("toggleIterableDatasetBarGraph");
+         const iterableDatasetBarGraph = document.getElementById("iterableDatasetBarGraph");
+  
+         toggleIterableDatasetBarGraphButton.addEventListener("click", function () {
+            iterableDatasetBarGraph.style.display = iterableDatasetBarGraph.style.display === "none" ? "block" : "none";
+         });
+
+         const toggleWordSearchBarGraphButton = document.getElementById("toggleWordSearchBarGraph");
+         const wordSearchBarGraph = document.getElementById("wordSearchBarGraph");
+  
+         toggleWordSearchBarGraphButton.addEventListener("click", function () {
+            wordSearchBarGraph.style.display = wordSearchBarGraph.style.display === "none" ? "block" : "none";
+         });
+  
+         const toggleWordCloudButton = document.getElementById("toggleWordCloud");
+         const wordCloud = document.getElementById("wordcloud");
+  
+         toggleWordCloudButton.addEventListener("click", function () {
+            wordCloud.style.display = wordCloud.style.display === "none" ? "block" : "none";
+         });
+  
+         const toggleGraphButton = document.getElementById("toggleGraph");
+         const graph = document.getElementById("graph");
+  
+         toggleGraphButton.addEventListener("click", function () {
+            graph.style.display = graph.style.display === "none" ? "block" : "none";
+         });
+  
+         const toggleArcButton = document.getElementById("toggleArc");
+         const arc = document.getElementById("arc");
+  
+         toggleArcButton.addEventListener("click", function () {
+            arc.style.display = arc.style.display === "none" ? "block" : "none";
+         });
+  
+         const toggleSceneBargraphButton = document.getElementById("toggleSceneBargraph");
+         const sceneBargraph = document.getElementById("scene-bargraph");
+  
+         toggleSceneBargraphButton.addEventListener("click", function () {
+            sceneBargraph.style.display = sceneBargraph.style.display === "none" ? "block" : "none";
+         });
+      });
+  </script>
+  <script>
+   // Function to open the modal
+   function openModal() {
+       var modal = document.getElementById("myModal");
+       modal.style.display = "block";
+   }
+
+   // Function to close the modal
+   function closeModal() {
+       var modal = document.getElementById("myModal");
+       modal.style.display = "none";
+   }
+</script>
 </body>
+
 </html>

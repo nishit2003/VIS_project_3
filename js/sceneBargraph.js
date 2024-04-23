@@ -136,20 +136,23 @@ class SceneBargraph {
             .style("fill", "#69b3a2")
 
         vis.svg.selectAll(".bar")
-                    .on('mouseover', function(event, d) {
-                // create a tool tip
-                d3.select("#tooltip")
-                    .style("display", "block")
-                    .style("left", event.pageX + vis.config.tooltipPadding + "px")
-                    .style("top", event.pageY + vis.config.tooltipPadding + "px")
-                    .style('opacity', 1)
-                    .style('z-index', 1000000)
-                    .html(
-                        `<div class="tooltip-label">
-                            <h3 class="tooltip-title">${d.episode}</h3>
-                            <h4>Lines of Dialogue: ${d.frequency}</h4>
-                        </div>`
-                    );
+                .on('mouseover', function(event, d) {
+                    // create a tool tip
+                    d3.select("#tooltip")
+                        .style("display", "block")
+                        .style("left", event.pageX + vis.config.tooltipPadding + "px")
+                        .style("top", event.pageY + vis.config.tooltipPadding + "px")
+                        .style('opacity', 1)
+                        .style('z-index', 1000000)
+                        .html(
+                            `<div class="tooltip-label">
+                                <h3 class="tooltip-title">${d.episode}</h3>
+                                <h4>Lines of Dialogue: ${d.frequency}</h4>
+                            </div>`
+                        );
+                    })
+                .on("mouseleave", () => {
+                    d3.select("#tooltip").style("display", "none");
                 });
     }
 
@@ -237,20 +240,23 @@ class SceneBargraph {
             .style("fill", "#69b3a2")
 
         vis.svg.selectAll(".bar")
-                    .on('mouseover', function(event, d) {
-                // create a tool tip
-                d3.select("#tooltip")
-                    .style("display", "block")
-                    .style("left", event.pageX + vis.config.tooltipPadding + "px")
-                    .style("top", event.pageY + vis.config.tooltipPadding + "px")
-                    .style('opacity', 1)
-                    .style('z-index', 1000000)
-                    .html(
-                        `<div class="tooltip-label">
-                            <h3 class="tooltip-title">${d.episode}</h3>
-                            <h4>Lines of Dialogue: ${d.frequency}</h4>
-                        </div>`
-                    );
+                .on('mouseover', function(event, d) {
+                    // create a tool tip
+                    d3.select("#tooltip")
+                        .style("display", "block")
+                        .style("left", event.pageX + vis.config.tooltipPadding + "px")
+                        .style("top", event.pageY + vis.config.tooltipPadding + "px")
+                        .style('opacity', 1)
+                        .style('z-index', 1000000)
+                        .html(
+                            `<div class="tooltip-label">
+                                <h3 class="tooltip-title">${d.episode}</h3>
+                                <h4>Lines of Dialogue: ${d.frequency}</h4>
+                            </div>`
+                        )
+                .on("mouseleave", () => {
+                    d3.select("#tooltip").style("display", "none");
+                });
                 });
 
         // Remove bars that are not needed
