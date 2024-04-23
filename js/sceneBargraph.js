@@ -145,7 +145,7 @@ class SceneBargraph {
                     .style('z-index', 1000000)
                     .html(
                         `<div class="tooltip-label">
-                            <h3 class="tooltip-title">${vis.character}</h3>
+                            <h3 class="tooltip-title">${d.episode}</h3>
                             <h4>Lines of Dialogue: ${d.frequency}</h4>
                         </div>`
                     );
