@@ -1,6 +1,6 @@
 /* This script will act as the main "runner" of the entire application. */
 // some script-level (global) variables
-let wordCloud, characterBarGraph, arcDiagram;
+let wordCloud, characterBarGraph, arcDiagram, sceneBarGraph;
 
 // Because we've moved the CSV data parsing into a separate module, we need to ensure the rest of the program waits for CSV parsing to complete.
 //  If you look at the in-class examples, most of the visualization creation is done INSIDE of the "d3.csv()" tag, so the synchronization is encapsulated.
@@ -12,7 +12,8 @@ async function main() {
     // after data has been successfully parsed, lets create some visualizations
     wordCloud = new WordCloud();
     characterBarGraph = new CharacterBarGraph({ parentElement: '#graph'}, DataStore.filteredData, "Alfred");
-    arcDiagram = new ArcDiagram({ parentElement: '#arc'}, DataStore.filteredData, CsvDataParser.sceneArray, 5)
+    arcDiagram = new ArcDiagram({ parentElement: '#arc'}, CsvDataParser.sceneArray, 3, CsvDataParser.importantCharacters)
+    sceneBarGraph = new SceneBargraph({ parentElement: '#scene-bargraph'}, DataStore.filteredData, CsvDataParser.sceneArray, "Batman", CsvDataParser.importantCharacters)
     // TODO: Create any other visualizations here as well (charts, graphs, etc.)
 
     // calls method to populate the episode number combo box
@@ -50,10 +51,12 @@ function populateEpisodeComboBox() {
     
     const LAST_EPISODE_NUM = 60;    // there are 60 episodes in the dataset. Could be parsed dynamically if needed
     for (let i = 1; i <= LAST_EPISODE_NUM; i++) {
-        const option = document.createElement("option");
-        option.value = i;
-        option.textContent = i;
-        cmbEpisode.appendChild(option);
+        if (i != 43 && i != 45 && i != 51 && i != 53 && i != 58 ) { // Some episodes could not be scraped, check to see if it is not those.
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            cmbEpisode.appendChild(option);
+        }
     }
 }
 
